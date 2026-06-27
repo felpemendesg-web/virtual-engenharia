@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projetos Realizados — Virtual Engenharia</title>
+  <meta name="description" content="Veja portfólio de projetos residenciais, comerciais, interiores e complementares.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div class="preloader" id="preloader">
+  <div class="pre-logo">
+    <img src="LOGOTIPO/SEM FUNDO/PRINCIPAL/1.png" alt="Virtual Engenharia" style="max-height: 52px; width: auto; object-fit: contain;">
+  </div>
+  <div class="pre-bar-wrap"><div class="pre-bar" id="pre-bar"></div></div>
+</div>
+
+<!-- VERTICAL GRID GUIDES -->
+<div class="grid-guides" aria-hidden="true">
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+</div>
+
+<!-- HEADER -->
+<header class="header" id="hdr">
+  <div class="w">
+    <div class="header-inner">
+      <nav class="h-nav-l">
+        <a href="index.html" class="">Início</a>
+        <a href="servicos.html" class="">Serviços</a>
+        <a href="nao-sei.html" class="">Não Sei</a>
+      </nav>
+      <a href="index.html" class="h-logo">
+        <img src="LOGOTIPO/SEM FUNDO/PRINCIPAL/1.png" alt="Virtual Engenharia" style="max-height: 32px; width: auto; object-fit: contain;">
+      </a>
+      <nav class="h-nav-r">
+        <a href="projetos.html" class="active">Projetos</a>
+        <a href="sobre.html" class="">Sobre</a>
+        <a href="contato.html" class="">Contato</a>
+        <a href="contato.html" class="h-cta" id="hl-cta">Orçamento</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+
+<section class="section" style="padding-top:180px;">
+  <div class="w">
+    <div class="s-num" data-aos="fade-up">Portfólio</div>
+    <h1 class="s-h" data-aos="fade-up" data-aos-delay="80">Projetos<br>Realizados</h1>
+
+    <!-- Category Filters -->
+    <div style="display:flex;gap:12px;margin-bottom:48px;flex-wrap:wrap;" data-aos="fade-up" data-aos-delay="120">
+      <button class="btn btn-sm btn-outline active-filter" onclick="filterCategory('all')">Todos</button>
+      <button class="btn btn-sm btn-ghost" onclick="filterCategory('residencial')">Residencial</button>
+      <button class="btn btn-sm btn-ghost" onclick="filterCategory('comercial')">Comercial</button>
+      <button class="btn btn-sm btn-ghost" onclick="filterCategory('interiores')">Interiores</button>
+      <button class="btn btn-sm btn-ghost" onclick="filterCategory('regularizacao')">Regularização</button>
+      <button class="btn btn-sm btn-ghost" onclick="filterCategory('tecnico')">Projetos Técnicos</button>
+    </div>
+
+    <div class="c-row" id="portfolio-grid" data-aos="fade-up" data-aos-delay="160">
+      <!-- Project 1 -->
+      <div class="card-listing proj-card" data-cat="residencial">
+        <div class="listing-img">
+          <img src="LOGOTIPO/COM FUNDO/PRINCIPAL/1.png" alt="Residência MN">
+          <div class="listing-tag">Residencial</div>
+        </div>
+        <div class="listing-body">
+          <div class="tx-sm" style="font-size:1.3rem;margin-bottom:8px;">Residência MN — 380m²</div>
+          <p class="tx-cap" style="margin-bottom:8px;"><strong>Desafio:</strong> Desenvolver um projeto moderno e integrado aproveitando ao máximo a iluminação natural em lote aclive.</p>
+          <p class="tx-cap" style="color:var(--teal);font-weight:600;"><strong>Solução:</strong> Projeto arquitetônico em níveis, com ampla área de vidro integrada à área gourmet.</p>
+          <div style="border-top:1px solid var(--border-s);margin-top:14px;padding-top:14px;"><span class="tx-cap">Campinas, SP</span></div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="card-listing proj-card" data-cat="comercial">
+        <div class="listing-img">
+          <img src="LOGOTIPO/COM FUNDO/PRINCIPAL/2.png" alt="Clínica Odonto">
+          <div class="listing-tag">Comercial</div>
+        </div>
+        <div class="listing-body">
+          <div class="tx-sm" style="font-size:1.3rem;margin-bottom:8px;">Clínica Odontológica</div>
+          <p class="tx-cap" style="margin-bottom:8px;"><strong>Desafio:</strong> Adaptar layout de sala comercial antiga atendendo as normas de vigilância sanitária (Anvisa).</p>
+          <p class="tx-cap" style="color:var(--teal);font-weight:600;"><strong>Solução:</strong> Divisão funcional otimizada de salas de atendimento, recepção e expurg técnico.</p>
+          <div style="border-top:1px solid var(--border-s);margin-top:14px;padding-top:14px;"><span class="tx-cap">São Paulo, SP</span></div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="card-listing proj-card" data-cat="regularizacao">
+        <div class="listing-img">
+          <img src="LOGOTIPO/COM FUNDO/PRINCIPAL/3.png" alt="Galpão Jundiaí">
+          <div class="listing-tag">Regularização</div>
+        </div>
+        <div class="listing-body">
+          <div class="tx-sm" style="font-size:1.3rem;margin-bottom:8px;">Galpão Logístico</div>
+          <p class="tx-cap" style="margin-bottom:8px;"><strong>Desafio:</strong> Regularizar ampliação de área construída de galpão fabril para obtenção de novo Habite-se.</p>
+          <p class="tx-cap" style="color:var(--teal);font-weight:600;"><strong>Solução:</strong> Levantamento técnico as-built, laudos de estabilidade estrutural e protocolo ágil.</p>
+          <div style="border-top:1px solid var(--border-s);margin-top:14px;padding-top:14px;"><span class="tx-cap">Jundiaí, SP</span></div>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="card-listing proj-card" data-cat="interiores">
+        <div class="listing-img">
+          <img src="LOGOTIPO/COM FUNDO/PRINCIPAL/4.png" alt="Apartamento VM">
+          <div class="listing-tag">Interiores</div>
+        </div>
+        <div class="listing-body">
+          <div class="tx-sm" style="font-size:1.3rem;margin-bottom:8px;">Apartamento Vila Mariana</div>
+          <p class="tx-cap" style="margin-bottom:8px;"><strong>Desafio:</strong> Cliente queria melhorar aproveitamento de espaço em living e cozinha integrada.</p>
+          <p class="tx-cap" style="color:var(--teal);font-weight:600;"><strong>Solução:</strong> Estudo técnico de circulação, projeto de marcenaria sob medida e projeto de iluminação.</p>
+          <div style="border-top:1px solid var(--border-s);margin-top:14px;padding-top:14px;"><span class="tx-cap">São Paulo, SP</span></div>
+        </div>
+      </div>
+
+      <!-- Project 5 -->
+      <div class="card-listing proj-card" data-cat="tecnico">
+        <div class="listing-img">
+          <img src="LOGOTIPO/LOGO - SIMBOLO/SEM FUNDO/PREENCHIDO/1.png" alt="Loteamento">
+          <div class="listing-tag">Projetos Técnicos</div>
+        </div>
+        <div class="listing-body">
+          <div class="tx-sm" style="font-size:1.3rem;margin-bottom:8px;">Infraestrutura Loteamento</div>
+          <p class="tx-cap" style="margin-bottom:8px;"><strong>Desafio:</strong> Fazer projetos complementares de elétrica e iluminação pública de novo condomínio.</p>
+          <p class="tx-cap" style="color:var(--teal);font-weight:600;"><strong>Solução:</strong> Dimensionamento de cabos subterrâneos, postes e subestação transformadora.</p>
+          <div style="border-top:1px solid var(--border-s);margin-top:14px;padding-top:14px;"><span class="tx-cap">Sorocaba, SP</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="ds-ft">
+  <div class="w">
+    <div class="ds-ft-grid">
+      <div>
+        <div class="ds-ft-brand" style="margin-bottom: 20px;">
+          <img src="LOGOTIPO/SEM FUNDO/PRINCIPAL/2.png" alt="Virtual Engenharia" style="max-height: 32px; width: auto; object-fit: contain;">
+        </div>
+        <p class="ds-ft-desc">Projetos de engenharia e interiores com excelência técnica e identidade visual sólida.</p>
+        <div class="ft-social">
+          <a href="#" class="ft-soc-a">in</a>
+          <a href="#" class="ft-soc-a">IG</a>
+          <a href="#" class="ft-soc-a">TW</a>
+        </div>
+      </div>
+      <div>
+        <div class="ft-h">Serviços</div>
+        <div class="ft-links">
+          <a href="construcao-reforma.html">Construção &amp; Reforma</a>
+          <a href="regularizacao.html">Regularização de Imóveis</a>
+          <a href="servicos.html">Projetos de Interiores</a>
+          <a href="servicos.html">Projetos Complementares</a>
+        </div>
+      </div>
+      <div>
+        <div class="ft-h">Mapa do Site</div>
+        <div class="ft-links">
+          <a href="index.html">Início</a>
+          <a href="servicos.html">Serviços</a>
+          <a href="nao-sei.html">Não sei o que preciso</a>
+          <a href="projetos.html">Projetos Realizados</a>
+          <a href="sobre.html">Sobre Nós</a>
+        </div>
+      </div>
+      <div>
+        <div class="ft-h">Contato</div>
+        <div class="ft-links">
+          <a href="mailto:contato@virtual.com.br">contato@virtual.com.br</a>
+          <a href="tel:+551199999999">(11) 99999-9999</a>
+        </div>
+      </div>
+    </div>
+    <div class="ds-ft-bottom">
+      <span class="ds-ft-copy">© 2025 Virtual Engenharia — Todos os Direitos Reservados</span>
+      <span class="ds-ft-copy">Cream Mode · #ECEDE6</span>
+    </div>
+  </div>
+  <div class="ds-ft-wordmark">Virtual</div>
+</footer>
+
+<script>
+  // PRELOADER
+  window.addEventListener('DOMContentLoaded', () => {
+    const pre = document.getElementById('preloader');
+    const bar = document.getElementById('pre-bar');
+    requestAnimationFrame(() => { bar.style.width = '100%'; });
+    setTimeout(() => {
+      pre.classList.add('hide');
+      setTimeout(() => { pre.style.display = 'none'; }, 600);
+      setTimeout(() => {
+        document.querySelectorAll('.js-tr .tr-content').forEach((el,i) =>
+          setTimeout(() => el.classList.add('revealed'), i * 180));
+      }, 200);
+    }, 1400);
+  });
+
+  // HEADER SCROLL
+  window.addEventListener('scroll', () => {
+    document.getElementById('hdr').classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // AOS
+  function runAOS() {
+    document.querySelectorAll('[data-aos]').forEach(el => {
+      if (el.classList.contains('_q')) return;
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.93) {
+        el.classList.add('_q');
+        const d = parseInt(el.getAttribute('data-aos-delay') || 0);
+        setTimeout(() => el.classList.add('aos-animate'), d);
+      }
+    });
+  }
+  window.addEventListener('load', runAOS);
+  window.addEventListener('scroll', runAOS, { passive: true });
+
+  // FILL TEXT
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.js-fill-text').forEach(el => {
+      new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          el.querySelectorAll('p').forEach((p, i) =>
+            setTimeout(() => p.classList.add('revealed'), i * 140));
+        });
+      }, { threshold: 0.25 }).observe(el);
+    });
+
+    // TEXT REVEAL on scroll
+    const trObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        e.target.querySelectorAll('.tr-content').forEach((el, i) =>
+          setTimeout(() => el.classList.add('revealed'), i * 200));
+        trObs.unobserve(e.target);
+      });
+    }, { threshold: 0.25 });
+    document.querySelectorAll('.tr-wrap').forEach(el => trObs.observe(el));
+  });
+  
+function filterCategory(cat) {
+  const btns = document.querySelectorAll('.active-filter, .btn-ghost');
+  btns.forEach(btn => {
+    if (btn.innerText.toLowerCase() === cat.toLowerCase() || (cat==='all' && btn.innerText.toLowerCase()==='todos')) {
+      btn.className = 'btn btn-sm btn-outline active-filter';
+    } else {
+      btn.className = 'btn btn-sm btn-ghost';
+    }
+  });
+
+  const cards = document.querySelectorAll('.proj-card');
+  cards.forEach(card => {
+    const cardCat = card.getAttribute('data-cat');
+    if (cat === 'all' || cardCat === cat) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+</script>
+</body>
+</html>
