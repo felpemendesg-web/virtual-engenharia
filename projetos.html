@@ -3,20 +3,379 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projetos Realizados — Virtual Engenharia</title>
-  <meta name="description" content="Veja portfólio de projetos residenciais, comerciais, interiores e complementares.">
+  <title>Nosso Portfólio — Projetos que Transformam Ideias em Soluções</title>
+  <meta name="description" content="Conheça projetos residenciais, comerciais, regularizações, parcelamentos, interiores e gerenciamento de obras desenvolvidos pela Virtual Engenharia.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
-  
+  <link rel="icon" type="image/png" href="assets/logo/simbolo-favicon.png">
+  <style>
+    /* ====== PAGE-SPECIFIC STYLES — Projetos ====== */
+
+    /* Shared section header (copied from servicos.html / sobre.html) */
+    .section-home { padding: 120px 0; position: relative; }
+    .s-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .s-title {
+      font-family: var(--fd);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 16px;
+      letter-spacing: -.01em;
+    }
+    .s-subtitle {
+      font-size: 17px;
+      color: var(--ink-mid);
+      line-height: 1.75;
+      max-width: 560px;
+    }
+    .s-header { margin-bottom: 0; }
+    .s-header.centered { text-align: center; }
+    .s-header.centered .s-subtitle { margin: 0 auto; }
+
+    /* Hero */
+    .pf-hero {
+      padding: 200px 0 100px;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(32,133,168,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(32,133,168,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .pf-hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    /* Category nav (compact .sit-card variant) */
+    .cat-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 40px;
+    }
+    .cat-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-white);
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      padding: 12px 22px 12px 14px;
+      font-family: var(--fb);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink-mid);
+      cursor: pointer;
+      transition: all .25s var(--ease);
+    }
+    .cat-btn:hover { border-color: rgba(32,133,168,0.35); color: var(--ink); }
+    .cat-btn.active {
+      border-color: var(--teal);
+      background: rgba(32,133,168,0.08);
+      color: var(--teal);
+    }
+    .cat-btn-icon {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: rgba(32,133,168,0.1);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--teal);
+      flex-shrink: 0;
+    }
+    .cat-btn-icon svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+
+    /* Project cards (extend global .card-listing) */
+    #portfolio-grid { margin-top: 48px; }
+    .proj-card { display: flex; flex-direction: column; }
+    .proj-desc { font-size: 13px; color: var(--ink-mid); line-height: 1.6; margin-bottom: 6px; }
+    .proj-desc strong { color: var(--ink); }
+    .proj-desc.solution strong { color: var(--teal); }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0; }
+    .proj-tag {
+      font-size: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+      color: var(--teal); background: rgba(32,133,168,0.08);
+      padding: 4px 10px; border-radius: 999px;
+    }
+    .proj-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid var(--border-s); margin-top: auto; padding-top: 14px;
+    }
+    .proj-city { font-size: 12px; color: var(--ink-muted); }
+    .proj-card.hidden-cat { display: none; }
+
+    /* Modal */
+    .proj-modal-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(30,33,50,0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 60px 20px;
+      overflow-y: auto;
+      opacity: 0;
+      transition: opacity .3s var(--ease);
+    }
+    .proj-modal-overlay.open { display: flex; opacity: 1; }
+    .proj-modal-panel {
+      background: var(--bg-white);
+      border-radius: 20px;
+      max-width: 880px;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      animation: scaleIn .4s var(--ease-sp);
+      box-shadow: var(--sh2);
+    }
+    .proj-modal-close {
+      position: absolute; top: 18px; right: 18px; z-index: 2;
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(255,255,255,0.92); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: var(--ink); cursor: pointer;
+      transition: all .25s var(--ease);
+    }
+    .proj-modal-close:hover { background: var(--ink); color: var(--bg); }
+    .proj-modal-img { width: 100%; aspect-ratio: 16/8; background: var(--bg-alt); overflow: hidden; }
+    .proj-modal-img img { width: 100%; height: 100%; object-fit: cover; }
+    .proj-modal-body { padding: 40px 44px 44px; }
+    .proj-modal-kicker {
+      font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 10px;
+    }
+    .proj-modal-title {
+      font-family: var(--fd); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800;
+      color: var(--ink); margin-bottom: 18px;
+    }
+    .proj-modal-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .proj-modal-cols {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 28px;
+    }
+    .proj-modal-sub {
+      font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--ink-muted); margin-bottom: 10px; padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .proj-modal-cols p { font-size: 14px; color: var(--ink-mid); line-height: 1.7; }
+    .proj-modal-services { margin-bottom: 28px; }
+    .proj-modal-services ul { display: flex; flex-direction: column; gap: 6px; }
+    .proj-modal-services li {
+      font-size: 14px; color: var(--ink-mid); display: flex; gap: 10px; align-items: flex-start;
+    }
+    .proj-modal-services li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+    .proj-modal-facts {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+      background: var(--bg); border-radius: 14px; padding: 20px 24px; margin-bottom: 28px;
+    }
+    .proj-modal-fact-lbl {
+      font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--ink-muted); margin-bottom: 4px;
+    }
+    .proj-modal-fact-val { font-size: 14px; font-weight: 700; color: var(--ink); }
+    .proj-modal-result { font-size: 14px; color: var(--ink-mid); line-height: 1.7; margin-bottom: 28px; }
+    .proj-modal-result strong { color: var(--ink); }
+
+    /* Modal — seções ricas (projetos reais, opcionais) */
+    .proj-modal-panel.rich { max-width: 980px; }
+    .proj-modal-tagline {
+      font-family: var(--fd); font-size: clamp(1.1rem, 2vw, 1.3rem); font-weight: 700;
+      color: var(--ink); line-height: 1.4; margin-bottom: 12px;
+    }
+    .proj-modal-section { margin-bottom: 28px; }
+    .proj-modal-section-title {
+      font-family: var(--fd); font-size: 15px; font-weight: 800; color: var(--ink);
+      margin-bottom: 14px; text-transform: uppercase; letter-spacing: .02em;
+    }
+    .proj-modal-characteristics {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px;
+      background: var(--bg); border-radius: 14px; padding: 20px 24px;
+    }
+    .proj-modal-rooms { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+    .proj-modal-concept-text { font-size: 14px; color: var(--ink-mid); line-height: 1.75; margin-bottom: 14px; }
+    .proj-modal-concept-list {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; margin-bottom: 14px;
+    }
+    .proj-modal-concept-list li {
+      font-size: 14px; color: var(--ink-mid); padding: 4px 0; display: flex; gap: 8px; align-items: flex-start;
+    }
+    .proj-modal-concept-list li::before { content: '—'; color: var(--teal); flex-shrink: 0; }
+    .proj-modal-checklist {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px;
+    }
+    .proj-modal-checklist li {
+      font-size: 14px; color: var(--ink-mid); padding: 6px 0; display: flex; gap: 10px; align-items: flex-start;
+    }
+    .proj-modal-checklist li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+    .proj-modal-diff-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .proj-modal-diff-card {
+      background: var(--bg); border-radius: 12px; padding: 18px 20px;
+    }
+    .proj-modal-diff-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+    .proj-modal-diff-text { font-size: 13px; color: var(--ink-mid); line-height: 1.6; }
+    .proj-modal-insights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .proj-insight-card { background: var(--bg); border-radius: 12px; padding: 20px 22px; }
+    .proj-insight-title {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 12px;
+    }
+    .proj-insight-card ul { display: flex; flex-direction: column; gap: 6px; }
+    .proj-insight-card li { font-size: 13px; color: var(--ink-mid); line-height: 1.55; display: flex; gap: 8px; align-items: flex-start; }
+    .proj-insight-card li::before { content: '—'; color: var(--ink-muted); flex-shrink: 0; }
+
+    /* Fluxograma "Onde esse projeto se encaixa?" */
+    .proj-flow { display: flex; flex-direction: column; align-items: center; gap: 0; max-width: 440px; margin: 0 auto; }
+    .proj-flow-step {
+      width: 100%; padding: 14px 20px; border-radius: 10px;
+      font-size: 14px; font-weight: 700; text-align: center;
+    }
+    .proj-flow-step.flow-active { background: rgba(32,133,168,.08); border: 1px solid rgba(32,133,168,.22); color: var(--teal-d); }
+    .proj-flow-step.flow-context { background: var(--bg); border: 1px dashed var(--border); color: var(--ink-muted); font-weight: 600; }
+    .proj-flow-arrow { color: var(--ink-muted); font-size: 16px; padding: 6px 0; }
+    .proj-flow-note { font-size: 13px; color: var(--ink-muted); text-align: center; margin-top: 18px; }
+    .proj-modal-gallery-group { margin-bottom: 22px; }
+    .proj-modal-gallery-group:last-child { margin-bottom: 0; }
+    .proj-modal-gallery-lbl {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 6px;
+    }
+    .proj-modal-gallery-caption { font-size: 13px; color: var(--ink-mid); margin-bottom: 10px; }
+    .proj-modal-gallery-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+    }
+    .proj-modal-gallery-grid img {
+      width: 100%; height: 140px; object-fit: cover; border-radius: 10px;
+      border: 1px solid var(--border); cursor: zoom-in; transition: transform .3s var(--ease);
+    }
+    .proj-modal-gallery-grid img:hover { transform: scale(1.03); }
+    .proj-modal-ficha {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px;
+      background: var(--bg); border-radius: 14px; padding: 8px 24px;
+    }
+    .proj-modal-ficha-row {
+      display: flex; justify-content: space-between; gap: 12px;
+      padding: 12px 0; border-bottom: 1px solid var(--border-s);
+    }
+    .proj-modal-ficha-row:nth-last-child(-n+2) { border-bottom: none; }
+    .proj-modal-ficha-lbl { font-size: 12px; color: var(--ink-muted); }
+    .proj-modal-ficha-val { font-size: 12px; font-weight: 700; color: var(--ink); text-align: right; }
+    .proj-lightbox {
+      position: fixed; inset: 0; z-index: 600; background: rgba(20,22,34,0.92);
+      display: none; align-items: center; justify-content: center; padding: 40px; cursor: zoom-out;
+    }
+    .proj-lightbox.open { display: flex; }
+    .proj-lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; box-shadow: var(--sh2); }
+
+    /* Situação do Cliente (reaproveita as cores semânticas de .badge .bw/.bt/.bs) */
+    .proj-situation { display: flex; flex-direction: column; }
+    .proj-situation-step { border-radius: 14px; padding: 20px 24px; border: 1px solid; }
+    .proj-situation-step.step-initial { background: rgba(200,150,40,.06); border-color: rgba(200,150,40,.2); }
+    .proj-situation-step.step-solution { background: rgba(32,133,168,.05); border-color: rgba(32,133,168,.18); }
+    .proj-situation-step.step-result { background: rgba(109,201,138,.08); border-color: rgba(109,201,138,.22); }
+    .proj-situation-lbl { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 10px; }
+    .step-initial .proj-situation-lbl { color: #9E7620; }
+    .step-solution .proj-situation-lbl { color: var(--teal-d); }
+    .step-result .proj-situation-lbl { color: #3A9B65; }
+    .proj-situation-connector { display: flex; justify-content: center; padding: 8px 0; color: var(--ink-muted); font-size: 16px; }
+    .proj-situation ul { display: flex; flex-direction: column; gap: 6px; }
+    .proj-situation li { font-size: 14px; color: var(--ink-mid); line-height: 1.55; display: flex; gap: 8px; align-items: flex-start; }
+    .proj-situation li::before { content: '•'; flex-shrink: 0; }
+
+    /* Encontre projetos parecidos */
+    .find-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 48px;
+    }
+    .find-card {
+      display: block; width: 100%; text-align: left; font-family: var(--fb);
+      background: var(--bg-white); border: 1px solid var(--border); border-radius: 16px;
+      padding: 26px 24px; cursor: pointer; transition: all .3s var(--ease);
+      position: relative; overflow: hidden;
+    }
+    .find-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: var(--g-brand-h); transform: scaleX(0); transition: transform .3s var(--ease); transform-origin: left;
+    }
+    .find-card:hover { border-color: rgba(32,133,168,0.25); box-shadow: var(--sh); transform: translateY(-3px); }
+    .find-card:hover::after { transform: scaleX(1); }
+    .find-title { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+    .find-desc { font-size: 13px; color: var(--ink-mid); line-height: 1.6; }
+
+    /* Philosophy */
+    .philosophy-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 48px;
+    }
+    .phi-card {
+      background: var(--bg-white); border: 1px solid var(--border); border-radius: 16px;
+      padding: 32px 26px;
+    }
+    .phi-num {
+      font-family: var(--fd); font-size: 40px; font-weight: 800; line-height: 1;
+      color: rgba(32,133,168,0.12); margin-bottom: 14px; letter-spacing: -.02em;
+    }
+    .phi-title { font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+    .phi-text { font-size: 14px; color: var(--ink-mid); line-height: 1.7; }
+
+    /* Final CTA */
+    .final-cta { background: var(--bg-dark); text-align: center; }
+    .final-cta-eyebrow {
+      font-size: 10px; font-weight: 700; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--mint); margin-bottom: 24px;
+    }
+    .final-cta-h2 {
+      font-family: var(--fd); font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 800;
+      line-height: 1.05; color: #F4F4F0; margin-bottom: 20px;
+      max-width: 700px; margin-left: auto; margin-right: auto;
+    }
+    .final-cta-text {
+      font-size: 15px; color: rgba(244,244,240,0.6); line-height: 1.7;
+      max-width: 520px; margin: 0 auto 48px;
+    }
+    .final-cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .find-grid { grid-template-columns: repeat(2, 1fr); }
+      .philosophy-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 1024px) {
+      .proj-modal-cols { grid-template-columns: 1fr; }
+      .proj-modal-facts { grid-template-columns: 1fr 1fr; }
+      .proj-modal-gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .proj-modal-insights-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .proj-modal-body { padding: 32px 24px 36px; }
+      .proj-modal-diff-grid { grid-template-columns: 1fr; }
+      .proj-modal-insights-grid { grid-template-columns: 1fr; }
+      .proj-modal-ficha { grid-template-columns: 1fr; }
+      .proj-modal-ficha-row:nth-last-child(-n+2) { border-bottom: 1px solid var(--border-s); }
+      .proj-modal-ficha-row:last-child { border-bottom: none; }
+    }
+    @media (max-width: 640px) {
+      .section-home { padding: 80px 0; }
+      .find-grid { grid-template-columns: 1fr; }
+      .philosophy-grid { grid-template-columns: 1fr; }
+      .proj-modal-overlay { padding: 0; }
+      .proj-modal-panel { border-radius: 0; min-height: 100vh; }
+      .proj-modal-facts { grid-template-columns: 1fr; }
+      .proj-modal-concept-list { grid-template-columns: 1fr; }
+      .proj-modal-checklist { grid-template-columns: 1fr; }
+      .proj-modal-gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
 </head>
 <body>
 
 <!-- PRELOADER -->
 <div class="preloader" id="preloader">
   <div class="pre-logo">
-    <img src="LOGOTIPO/SEM FUNDO/PRINCIPAL/1.png" alt="Virtual Engenharia" style="max-height: 52px; width: auto; object-fit: contain;">
+    <img src="assets/logo/sem-fundo-principal-1.png" alt="Virtual Engenharia" style="max-height: 52px; width: auto; object-fit: contain;">
   </div>
   <div class="pre-bar-wrap"><div class="pre-bar" id="pre-bar"></div></div>
 </div>
@@ -35,10 +394,10 @@
       <nav class="h-nav-l">
         <a href="index.html" class="">Início</a>
         <a href="servicos.html" class="">Serviços</a>
-        <a href="nao-sei.html" class="">Não Sei</a>
+        <a href="nao-sei-por-onde-comecar.html" class="">Não Sei Por Onde Começar</a>
       </nav>
       <a href="index.html" class="h-logo">
-        <img src="LOGOTIPO/SEM FUNDO/PRINCIPAL/1.png" alt="Virtual Engenharia" style="max-height: 32px; width: auto; object-fit: contain;">
+        <img src="assets/logo/sem-fundo-principal-1.png" alt="Virtual Engenharia" style="max-height: 32px; width: auto; object-fit: contain;">
       </a>
       <nav class="h-nav-r">
         <a href="projetos.html" class="active">Projetos</a>
@@ -51,91 +410,255 @@
 </header>
 
 
-<section class="section" style="padding-top:180px;">
+<!-- =========================================
+     1. HERO
+     ========================================= -->
+<section class="pf-hero">
   <div class="w">
     <div class="s-num" data-aos="fade-up">Portfólio</div>
-    <h1 class="s-h" data-aos="fade-up" data-aos-delay="80">Projetos<br>Realizados</h1>
+    <h1 class="s-h" style="margin-bottom:28px;" data-aos="fade-up" data-aos-delay="80">
+      Nosso <span class="accent">Portfólio</span>
+    </h1>
+    <p class="tx-md" style="font-size:clamp(1.3rem,2.2vw,1.7rem);margin-bottom:20px;max-width:640px;" data-aos="fade-up" data-aos-delay="120">
+      Projetos que transformam ideias em soluções.
+    </p>
+    <p class="tx-blg" style="max-width:620px;margin-bottom:40px;" data-aos="fade-up" data-aos-delay="160">
+      Cada projeto representa um desafio diferente e uma solução construída em conjunto com nossos
+      clientes. Conheça alguns dos trabalhos desenvolvidos pela Virtual e veja como unimos engenharia,
+      arquitetura e planejamento para entregar resultados que fazem a diferença na vida de quem vai
+      usar aquele espaço (ou aquela obra).
+    </p>
+    <div class="pf-hero-cta" data-aos="fade-up" data-aos-delay="200">
+      <a href="contato.html" class="btn btn-ink btn-lg">Solicitar orçamento</a>
+      <a href="servicos.html" class="btn btn-outline btn-lg">Conhecer nossos serviços</a>
+    </div>
+  </div>
+</section>
 
-    <!-- Category Filters -->
-    <div style="display:flex;gap:12px;margin-bottom:48px;flex-wrap:wrap;" data-aos="fade-up" data-aos-delay="120">
-      <button class="btn btn-sm btn-outline active-filter" onclick="filterCategory('all')">Todos</button>
-      <button class="btn btn-sm btn-ghost" onclick="filterCategory('residencial')">Residencial</button>
-      <button class="btn btn-sm btn-ghost" onclick="filterCategory('comercial')">Comercial</button>
-      <button class="btn btn-sm btn-ghost" onclick="filterCategory('interiores')">Interiores</button>
-      <button class="btn btn-sm btn-ghost" onclick="filterCategory('regularizacao')">Regularização</button>
-      <button class="btn btn-sm btn-ghost" onclick="filterCategory('tecnico')">Projetos Técnicos</button>
+
+<!-- =========================================
+     3+4. EXPLORE + GALERIA DE PROJETOS
+     ========================================= -->
+<section class="section-home" id="portfolio" style="background:var(--bg-alt);">
+  <div class="w">
+    <div class="s-header">
+      <div class="s-eyebrow" data-aos="fade-up">Navegue por categoria</div>
+      <h2 class="s-title" data-aos="fade-up" data-aos-delay="60">Explore nossos projetos</h2>
+      <p class="s-subtitle" data-aos="fade-up" data-aos-delay="120">
+        Escolha uma categoria para ver projetos parecidos com o seu.
+      </p>
     </div>
 
-    <div class="c-row" id="portfolio-grid" data-aos="fade-up" data-aos-delay="160">
-      <!-- Project 1 -->
+    <div class="cat-nav" data-aos="fade-up" data-aos-delay="160">
+      <button type="button" class="cat-btn active" data-filter="all">
+        <span class="cat-btn-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span>
+        Todos
+      </button>
+      <button type="button" class="cat-btn" data-filter="residencial">
+        <span class="cat-btn-icon"><svg viewBox="0 0 24 24"><rect x="2" y="10" width="20" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/><line x1="12" y1="14" x2="12" y2="17"/></svg></span>
+        Residenciais
+      </button>
+      <button type="button" class="cat-btn" data-filter="comercial">
+        <span class="cat-btn-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+        Comerciais
+      </button>
+      <button type="button" class="cat-btn" data-filter="regularizacao">
+        <span class="cat-btn-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="11" x2="15" y2="11"/></svg></span>
+        Regularizações
+      </button>
+      <button type="button" class="cat-btn" data-filter="parcelamento">
+        <span class="cat-btn-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/></svg></span>
+        Parcelamento de Solo
+      </button>
+      <button type="button" class="cat-btn" data-filter="interiores">
+        <span class="cat-btn-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></span>
+        Interiores
+      </button>
+      <button type="button" class="cat-btn" data-filter="gerenciamento">
+        <span class="cat-btn-icon"><svg viewBox="0 0 24 24"><path d="M2 20h20M4 20V10l4-3 4 3v10M12 20V6l4-3 4 3v14"/></svg></span>
+        Gerenciamento de Obras
+      </button>
+    </div>
+
+    <div class="c-row" id="portfolio-grid" data-aos="fade-up" data-aos-delay="200">
+
       <div class="card-listing proj-card" data-cat="residencial">
         <div class="listing-img">
-          <img src="LOGOTIPO/COM FUNDO/PRINCIPAL/1.png" alt="Residência MN">
+          <img src="assets/projetos/geminadas-12x30/fachada-01.jpg" alt="Fachada de três residências geminadas contemporâneas com portões de desenho exclusivo" loading="lazy">
           <div class="listing-tag">Residencial</div>
         </div>
         <div class="listing-body">
-          <div class="tx-sm" style="font-size:1.3rem;margin-bottom:8px;">Residência MN — 380m²</div>
-          <p class="tx-cap" style="margin-bottom:8px;"><strong>Desafio:</strong> Desenvolver um projeto moderno e integrado aproveitando ao máximo a iluminação natural em lote aclive.</p>
-          <p class="tx-cap" style="color:var(--teal);font-weight:600;"><strong>Solução:</strong> Projeto arquitetônico em níveis, com ampla área de vidro integrada à área gourmet.</p>
-          <div style="border-top:1px solid var(--border-s);margin-top:14px;padding-top:14px;"><span class="tx-cap">Campinas, SP</span></div>
+          <div class="tx-sm" style="font-size:1.25rem;margin-bottom:10px;">Estudo de Viabilidade para Geminadas em Lote Urbano 12x30</div>
+          <p class="proj-desc"><strong>O desafio:</strong> Entender o melhor aproveitamento de um terreno de 12 x 30 m para um empreendimento residencial voltado à venda ou locação.</p>
+          <p class="proj-desc solution"><strong>A solução:</strong> Estudo arquitetônico para implantação de três unidades geminadas, equilibrando aproveitamento, conforto e potencial de investimento.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Arquitetônico</span>
+            <span class="proj-tag">Estudo de Viabilidade</span>
+            <span class="proj-tag">3 Unidades</span>
+          </div>
+          <div class="proj-foot">
+            <span class="proj-city">Brusque · SC</span>
+            <button type="button" class="btn btn-sm btn-outline" data-proj="geminadas-12x30">Ver projeto</button>
+          </div>
         </div>
       </div>
 
-      <!-- Project 2 -->
-      <div class="card-listing proj-card" data-cat="comercial">
-        <div class="listing-img">
-          <img src="LOGOTIPO/COM FUNDO/PRINCIPAL/2.png" alt="Clínica Odonto">
-          <div class="listing-tag">Comercial</div>
-        </div>
-        <div class="listing-body">
-          <div class="tx-sm" style="font-size:1.3rem;margin-bottom:8px;">Clínica Odontológica</div>
-          <p class="tx-cap" style="margin-bottom:8px;"><strong>Desafio:</strong> Adaptar layout de sala comercial antiga atendendo as normas de vigilância sanitária (Anvisa).</p>
-          <p class="tx-cap" style="color:var(--teal);font-weight:600;"><strong>Solução:</strong> Divisão funcional otimizada de salas de atendimento, recepção e expurg técnico.</p>
-          <div style="border-top:1px solid var(--border-s);margin-top:14px;padding-top:14px;"><span class="tx-cap">São Paulo, SP</span></div>
-        </div>
-      </div>
-
-      <!-- Project 3 -->
       <div class="card-listing proj-card" data-cat="regularizacao">
         <div class="listing-img">
-          <img src="LOGOTIPO/COM FUNDO/PRINCIPAL/3.png" alt="Galpão Jundiaí">
+          <img src="assets/projetos/regularizacao-adequacao-unifamiliar/modelo-3d-01.jpg" alt="Modelo tridimensional de residência unifamiliar em processo de regularização e adequação arquitetônica" loading="lazy">
           <div class="listing-tag">Regularização</div>
         </div>
         <div class="listing-body">
-          <div class="tx-sm" style="font-size:1.3rem;margin-bottom:8px;">Galpão Logístico</div>
-          <p class="tx-cap" style="margin-bottom:8px;"><strong>Desafio:</strong> Regularizar ampliação de área construída de galpão fabril para obtenção de novo Habite-se.</p>
-          <p class="tx-cap" style="color:var(--teal);font-weight:600;"><strong>Solução:</strong> Levantamento técnico as-built, laudos de estabilidade estrutural e protocolo ágil.</p>
-          <div style="border-top:1px solid var(--border-s);margin-top:14px;padding-top:14px;"><span class="tx-cap">Jundiaí, SP</span></div>
+          <div class="tx-sm" style="font-size:1.25rem;margin-bottom:10px;">Regularização e Adequação de Residência Unifamiliar</div>
+          <p class="proj-desc"><strong>O desafio:</strong> Adequar uma edificação existente às exigências técnicas e legais, com oportunidade de melhorar a organização dos ambientes.</p>
+          <p class="proj-desc solution"><strong>A solução:</strong> Levantamento da edificação existente e novo projeto arquitetônico com as adequações necessárias para regularização.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Regularização</span>
+            <span class="proj-tag">Arquitetônico</span>
+          </div>
+          <div class="proj-foot">
+            <span class="proj-city">Brusque · SC</span>
+            <button type="button" class="btn btn-sm btn-outline" data-proj="regularizacao-adequacao-unifamiliar">Ver projeto</button>
+          </div>
         </div>
       </div>
 
-      <!-- Project 4 -->
-      <div class="card-listing proj-card" data-cat="interiores">
+      <div class="card-listing proj-card" data-cat="residencial">
         <div class="listing-img">
-          <img src="LOGOTIPO/COM FUNDO/PRINCIPAL/4.png" alt="Apartamento VM">
-          <div class="listing-tag">Interiores</div>
+          <img src="assets/projetos/ampliacao-arquitetonico-estrutural/arquitetonico-implantacao.jpg" alt="Implantação e volumetria da ampliação de residência geminada" loading="lazy">
+          <div class="listing-tag">Residencial</div>
         </div>
         <div class="listing-body">
-          <div class="tx-sm" style="font-size:1.3rem;margin-bottom:8px;">Apartamento Vila Mariana</div>
-          <p class="tx-cap" style="margin-bottom:8px;"><strong>Desafio:</strong> Cliente queria melhorar aproveitamento de espaço em living e cozinha integrada.</p>
-          <p class="tx-cap" style="color:var(--teal);font-weight:600;"><strong>Solução:</strong> Estudo técnico de circulação, projeto de marcenaria sob medida e projeto de iluminação.</p>
-          <div style="border-top:1px solid var(--border-s);margin-top:14px;padding-top:14px;"><span class="tx-cap">São Paulo, SP</span></div>
+          <div class="tx-sm" style="font-size:1.25rem;margin-bottom:10px;">Ampliação Residencial com Projeto Arquitetônico e Estrutural</div>
+          <p class="proj-desc"><strong>O desafio:</strong> Ampliar uma residência geminada existente, preservando sua estabilidade estrutural e a linguagem arquitetônica original.</p>
+          <p class="proj-desc solution"><strong>A solução:</strong> Projeto arquitetônico e estrutural completo, com compatibilização entre a nova área e a edificação existente.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Arquitetônico</span>
+            <span class="proj-tag">Estrutural</span>
+          </div>
+          <div class="proj-foot">
+            <span class="proj-city">Brusque · SC</span>
+            <button type="button" class="btn btn-sm btn-outline" data-proj="ampliacao-arquitetonico-estrutural">Ver projeto</button>
+          </div>
         </div>
       </div>
 
-      <!-- Project 5 -->
-      <div class="card-listing proj-card" data-cat="tecnico">
+      <div class="card-listing proj-card" data-cat="regularizacao">
         <div class="listing-img">
-          <img src="LOGOTIPO/LOGO - SIMBOLO/SEM FUNDO/PREENCHIDO/1.png" alt="Loteamento">
-          <div class="listing-tag">Projetos Técnicos</div>
+          <img src="assets/projetos/levantamento-usucapiao/levantamento-vertices.jpg" alt="Levantamento topográfico com vértices e perímetro do imóvel" loading="lazy">
+          <div class="listing-tag">Regularização</div>
         </div>
         <div class="listing-body">
-          <div class="tx-sm" style="font-size:1.3rem;margin-bottom:8px;">Infraestrutura Loteamento</div>
-          <p class="tx-cap" style="margin-bottom:8px;"><strong>Desafio:</strong> Fazer projetos complementares de elétrica e iluminação pública de novo condomínio.</p>
-          <p class="tx-cap" style="color:var(--teal);font-weight:600;"><strong>Solução:</strong> Dimensionamento de cabos subterrâneos, postes e subestação transformadora.</p>
-          <div style="border-top:1px solid var(--border-s);margin-top:14px;padding-top:14px;"><span class="tx-cap">Sorocaba, SP</span></div>
+          <div class="tx-sm" style="font-size:1.25rem;margin-bottom:10px;">Levantamento Topográfico para Processo de Usucapião</div>
+          <p class="proj-desc"><strong>O desafio:</strong> Transformar uma ocupação existente em um levantamento técnico confiável, compatível com as normas cartográficas e cadastrais.</p>
+          <p class="proj-desc solution"><strong>A solução:</strong> Mapa planimétrico e memorial descritivo com perímetro, confrontações, coordenadas e vértices, para instruir o processo de usucapião.</p>
+          <div class="proj-tags">
+            <span class="proj-tag">Topografia</span>
+            <span class="proj-tag">Usucapião</span>
+          </div>
+          <div class="proj-foot">
+            <span class="proj-city">Brusque · SC</span>
+            <button type="button" class="btn btn-sm btn-outline" data-proj="levantamento-usucapiao">Ver projeto</button>
+          </div>
         </div>
       </div>
+
+    </div>
+
+    <div id="portfolio-empty" style="display:none;text-align:center;padding:48px 24px;">
+      <p class="tx-blg" style="margin-bottom:20px;">Ainda não temos um caso publicado nesta categoria — mas já atuamos nela.</p>
+      <a href="https://wa.me/5547991134446?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20projetos%20nessa%20categoria." target="_blank" class="btn btn-outline">Falar com a Virtual</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     5. ENCONTRE PROJETOS PARECIDOS COM O SEU
+     ========================================= -->
+<section class="section-home">
+  <div class="w">
+    <div class="s-header centered">
+      <div class="s-eyebrow" data-aos="fade-up">Comece por aqui</div>
+      <h2 class="s-title" data-aos="fade-up" data-aos-delay="60">Encontre projetos parecidos com o seu</h2>
+    </div>
+
+    <div class="find-grid" data-aos="fade-up" data-aos-delay="120">
+      <button type="button" class="find-card" data-goto="residencial">
+        <div class="find-title">Quero construir</div>
+        <div class="find-desc">Veja projetos residenciais completos.</div>
+      </button>
+      <button type="button" class="find-card" data-goto="interiores">
+        <div class="find-title">Quero reformar</div>
+        <div class="find-desc">Conheça reformas e interiores.</div>
+      </button>
+      <button type="button" class="find-card" data-goto="comercial">
+        <div class="find-title">Quero abrir uma empresa</div>
+        <div class="find-desc">Veja projetos comerciais e regularizados.</div>
+      </button>
+      <button type="button" class="find-card" data-goto="parcelamento">
+        <div class="find-title">Tenho um terreno</div>
+        <div class="find-desc">Veja parcelamentos.</div>
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     6. COMO PENSAMOS CADA PROJETO
+     ========================================= -->
+<section class="section-home" style="background:var(--bg-alt);">
+  <div class="w">
+    <div class="s-header centered">
+      <div class="s-eyebrow" data-aos="fade-up">Não é um processo. É uma filosofia.</div>
+      <h2 class="s-title" data-aos="fade-up" data-aos-delay="60">Como pensamos cada projeto</h2>
+    </div>
+
+    <div class="philosophy-grid" data-aos="fade-up" data-aos-delay="120">
+      <div class="phi-card">
+        <div class="phi-num">01</div>
+        <div class="phi-title">Entender</div>
+        <p class="phi-text">Primeiro ouvimos o cliente.</p>
+      </div>
+      <div class="phi-card">
+        <div class="phi-num">02</div>
+        <div class="phi-title">Planejar</div>
+        <p class="phi-text">Cada solução é desenvolvida considerando aspectos técnicos, legais e funcionais.</p>
+      </div>
+      <div class="phi-card">
+        <div class="phi-num">03</div>
+        <div class="phi-title">Desenvolver</div>
+        <p class="phi-text">Os projetos são compatibilizados para reduzir imprevistos.</p>
+      </div>
+      <div class="phi-card">
+        <div class="phi-num">04</div>
+        <div class="phi-title">Acompanhar</div>
+        <p class="phi-text">Quando necessário, seguimos ao lado do cliente durante a execução.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     9. CTA FINAL
+     ========================================= -->
+<section class="section-home final-cta" id="cta-final">
+  <div class="w">
+    <div class="final-cta-eyebrow" data-aos="fade-up">Próximo passo</div>
+    <h2 class="final-cta-h2" data-aos="fade-up" data-aos-delay="60">
+      Seu próximo projeto pode<br>ser o próximo daqui.
+    </h2>
+    <p class="final-cta-text" data-aos="fade-up" data-aos-delay="120">
+      Vamos entender sua necessidade e desenvolver a melhor solução para o seu imóvel.
+    </p>
+    <div class="final-cta-buttons" data-aos="fade-up" data-aos-delay="180">
+      <a href="contato.html" class="btn btn-mint btn-lg">Solicitar orçamento</a>
+      <a href="https://wa.me/5547991134446?text=Ol%C3%A1!%20Vi%20o%20portf%C3%B3lio%20de%20projetos%20e%20gostaria%20de%20conversar." target="_blank" class="btn btn-ghost btn-lg" style="border-color:rgba(244,244,240,0.3);color:#F4F4F0!important;display:inline-flex;align-items:center;gap:10px;">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#F4F4F0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Conversar pelo WhatsApp
+      </a>
     </div>
   </div>
 </section>
@@ -145,51 +668,247 @@
 <footer class="ds-ft">
   <div class="w">
     <div class="ds-ft-grid">
+
+      <!-- Brand col -->
       <div>
-        <div class="ds-ft-brand" style="margin-bottom: 20px;">
-          <img src="LOGOTIPO/SEM FUNDO/PRINCIPAL/2.png" alt="Virtual Engenharia" style="max-height: 32px; width: auto; object-fit: contain;">
+        <div style="margin-bottom: 24px;">
+          <img src="assets/logo/sem-fundo-principal-2.png" alt="Virtual Engenharia" style="max-height: 40px; width: auto; object-fit: contain;">
         </div>
-        <p class="ds-ft-desc">Projetos de engenharia e interiores com excelência técnica e identidade visual sólida.</p>
+        <p class="ds-ft-desc">Engenharia e interiores em Brusque – SC. Construção, reforma, regularização e design de ambientes com orientação técnica do início ao fim.</p>
         <div class="ft-social">
-          <a href="#" class="ft-soc-a">in</a>
-          <a href="#" class="ft-soc-a">IG</a>
-          <a href="#" class="ft-soc-a">TW</a>
+          <a href="https://www.instagram.com/virtual.projetos?igsh=MThyOGh4NTh3czZtNQ==" target="_blank" rel="noopener" class="ft-soc-a" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <a href="https://linkedin.com/company/virtualengenharia" target="_blank" rel="noopener" class="ft-soc-a" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <a href="https://wa.me/5547991134446" target="_blank" rel="noopener" class="ft-soc-a" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+          </a>
+          <a href="https://facebook.com/virtualengenharia" target="_blank" rel="noopener" class="ft-soc-a" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </a>
         </div>
       </div>
+
+      <!-- Serviços col -->
       <div>
         <div class="ft-h">Serviços</div>
         <div class="ft-links">
-          <a href="construcao-reforma.html">Construção &amp; Reforma</a>
-          <a href="regularizacao.html">Regularização de Imóveis</a>
-          <a href="servicos.html">Projetos de Interiores</a>
-          <a href="servicos.html">Projetos Complementares</a>
+          <a href="servicos.html#svc-arquitetonico">Projeto Arquitetônico</a>
+          <a href="servicos.html#svc-eletrico">Projeto Elétrico</a>
+          <a href="servicos.html#svc-hidrossanitario">Projeto Hidrossanitário</a>
+          <a href="servicos.html#svc-preventivo">Preventivo Contra Incêndio</a>
+          <a href="servicos.html#svc-regularizacao">Regularização de Imóveis</a>
+          <a href="servicos.html#svc-gerenciamento">Gerenciamento de Obras</a>
+          <a href="servicos.html#svc-parcelamento">Parcelamento de Solo</a>
+          <a href="servicos.html#svc-interiores">Interiores</a>
         </div>
       </div>
+
+      <!-- Navegação col -->
       <div>
-        <div class="ft-h">Mapa do Site</div>
+        <div class="ft-h">Navegação</div>
         <div class="ft-links">
           <a href="index.html">Início</a>
           <a href="servicos.html">Serviços</a>
-          <a href="nao-sei.html">Não sei o que preciso</a>
+          <a href="nao-sei-por-onde-comecar.html">Não Sei Por Onde Começar</a>
           <a href="projetos.html">Projetos Realizados</a>
-          <a href="sobre.html">Sobre Nós</a>
+          <a href="sobre.html">Sobre a Virtual</a>
+          <a href="contato.html">Contato</a>
         </div>
       </div>
+
+      <!-- Contato col -->
       <div>
-        <div class="ft-h">Contato</div>
+        <div class="ft-h">Fale Conosco</div>
         <div class="ft-links">
-          <a href="mailto:contato@virtual.com.br">contato@virtual.com.br</a>
-          <a href="tel:+551199999999">(11) 99999-9999</a>
+          <a href="https://wa.me/5547991134446" target="_blank" rel="noopener">
+            <span style="display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(244,244,240,0.55)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </span>
+          </a>
+          <a href="tel:+5547991134446">
+            <span style="display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(244,244,240,0.65)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              (47) 99113-4446
+            </span>
+          </a>
+          <a href="mailto:contatolucasgamba@gmail.com">
+            <span style="display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(244,244,240,0.55)" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              contatolucasgamba@gmail.com
+            </span>
+          </a>
+          <a href="contato.html">Solicitar Orçamento</a>
+        </div>
+
+        <div style="margin-top: 32px; padding: 20px; background: rgba(32,133,168,0.08); border: 1px solid rgba(32,133,168,0.2); border-radius: 12px;">
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--mint); margin-bottom: 8px;">Atendimento</div>
+          <div style="font-size: 13px; color: rgba(244,244,240,0.6); line-height: 1.6;">
+            Seg–Sex, 9h às 18h<br>
+            Resposta em até 24h
+          </div>
         </div>
       </div>
+
     </div>
     <div class="ds-ft-bottom">
       <span class="ds-ft-copy">© 2025 Virtual Engenharia — Todos os Direitos Reservados</span>
-      <span class="ds-ft-copy">Cream Mode · #ECEDE6</span>
+      <a href="https://intensedigital.com.br" target="_blank" rel="noopener" class="ds-ft-copy">Desenvolvido por Intense Digital</a>
     </div>
   </div>
   <div class="ds-ft-wordmark">Virtual</div>
 </footer>
+
+
+<!-- =========================================
+     MODAL DE PROJETO
+     ========================================= -->
+<div class="proj-modal-overlay" id="proj-modal-overlay">
+  <div class="proj-modal-panel" role="dialog" aria-modal="true" aria-labelledby="proj-modal-title" id="proj-modal-panel">
+    <button type="button" class="proj-modal-close" id="proj-modal-close" aria-label="Fechar">✕</button>
+    <div class="proj-modal-img"><img id="proj-modal-img" src="" alt=""></div>
+    <div class="proj-modal-body">
+      <div class="proj-modal-kicker" id="proj-modal-kicker"></div>
+      <h3 class="proj-modal-title" id="proj-modal-title"></h3>
+      <div class="proj-modal-tags" id="proj-modal-tags"></div>
+
+      <!-- Tagline de abertura (projetos ricos) -->
+      <div id="proj-modal-tagline-wrap" style="display:none;">
+        <p class="proj-modal-tagline" id="proj-modal-tagline"></p>
+        <p class="proj-modal-concept-text" id="proj-modal-hero-text" style="margin-bottom:28px;"></p>
+      </div>
+
+      <!-- Ficha Técnica (projetos ricos) -->
+      <div class="proj-modal-section" id="proj-modal-ficha-wrap" style="display:none;">
+        <div class="proj-modal-section-title">Ficha Técnica</div>
+        <div class="proj-modal-ficha" id="proj-modal-ficha"></div>
+      </div>
+
+      <div class="proj-modal-cols">
+        <div>
+          <div class="proj-modal-sub">Contexto</div>
+          <p id="proj-modal-context"></p>
+        </div>
+        <div>
+          <div class="proj-modal-sub">O desafio</div>
+          <p id="proj-modal-challenge"></p>
+        </div>
+      </div>
+
+      <div class="proj-modal-sub">A solução</div>
+      <p style="font-size:14px;color:var(--ink-mid);line-height:1.7;margin-bottom:28px;" id="proj-modal-solution"></p>
+
+      <div class="proj-modal-services">
+        <div class="proj-modal-sub">Serviços executados</div>
+        <ul id="proj-modal-services-list"></ul>
+      </div>
+
+      <div class="proj-modal-facts" id="proj-modal-facts"></div>
+
+      <!-- Principais características (projetos ricos) -->
+      <div class="proj-modal-section" id="proj-modal-characteristics-wrap" style="display:none;">
+        <div class="proj-modal-section-title">Principais características</div>
+        <div class="proj-modal-characteristics" id="proj-modal-characteristics"></div>
+        <div class="proj-modal-rooms" id="proj-modal-rooms"></div>
+      </div>
+
+      <!-- Conceito arquitetônico (projetos ricos) -->
+      <div class="proj-modal-section" id="proj-modal-concept-wrap" style="display:none;">
+        <div class="proj-modal-section-title" id="proj-modal-concept-title">Conceito arquitetônico</div>
+        <p class="proj-modal-concept-text" id="proj-modal-concept-text"></p>
+        <ul class="proj-modal-concept-list" id="proj-modal-concept-list"></ul>
+        <p class="proj-modal-concept-text" id="proj-modal-concept-closing" style="margin-bottom:0;"></p>
+      </div>
+
+      <!-- Aproveitamento do terreno / Principais adequações (projetos ricos) -->
+      <div class="proj-modal-section" id="proj-modal-landuse-wrap" style="display:none;">
+        <div class="proj-modal-section-title" id="proj-modal-landuse-title">Aproveitamento do terreno</div>
+        <p class="proj-modal-concept-text" id="proj-modal-landuse-text"></p>
+        <ul class="proj-modal-checklist" id="proj-modal-landuse-list"></ul>
+      </div>
+
+      <!-- Diferenciais do projeto / Principais soluções (projetos ricos, título configurável) -->
+      <div class="proj-modal-section" id="proj-modal-differentials-wrap" style="display:none;">
+        <div class="proj-modal-section-title" id="proj-modal-differentials-title">Diferenciais do projeto</div>
+        <p class="proj-modal-concept-text" id="proj-modal-differentials-text"></p>
+        <div class="proj-modal-diff-grid" id="proj-modal-diff-grid"></div>
+      </div>
+
+      <!-- Por trás do projeto: insights por disciplina (projetos ricos) -->
+      <div class="proj-modal-section" id="proj-modal-insights-wrap" style="display:none;">
+        <div class="proj-modal-section-title">Por trás do projeto</div>
+        <div class="proj-modal-insights-grid" id="proj-modal-insights-grid"></div>
+      </div>
+
+      <!-- Galeria categorizada (projetos ricos) -->
+      <div class="proj-modal-section" id="proj-modal-gallery-wrap" style="display:none;">
+        <div class="proj-modal-section-title">Galeria</div>
+        <div id="proj-modal-gallery"></div>
+      </div>
+
+      <!-- O que foi desenvolvido (projetos ricos) -->
+      <div class="proj-modal-section" id="proj-modal-whatdone-wrap" style="display:none;">
+        <div class="proj-modal-section-title">O que foi desenvolvido</div>
+        <ul class="proj-modal-checklist" id="proj-modal-whatdone-list"></ul>
+      </div>
+
+      <!-- Conceitos técnicos / glossário (projetos ricos, título configurável) -->
+      <div class="proj-modal-section" id="proj-modal-glossary-wrap" style="display:none;">
+        <div class="proj-modal-section-title" id="proj-modal-glossary-title">Conceitos técnicos</div>
+        <div class="proj-modal-diff-grid" id="proj-modal-glossary-grid"></div>
+      </div>
+
+      <!-- Situação do Cliente (projetos ricos, opcional; rótulos configuráveis) -->
+      <div class="proj-modal-section" id="proj-modal-situation-wrap" style="display:none;">
+        <div class="proj-modal-section-title" id="proj-modal-situation-title">Situação do Cliente</div>
+        <div class="proj-situation">
+          <div class="proj-situation-step step-initial">
+            <div class="proj-situation-lbl" id="proj-situation-lbl-1">Situação inicial</div>
+            <ul id="proj-situation-step1"></ul>
+          </div>
+          <div class="proj-situation-connector">↓</div>
+          <div class="proj-situation-step step-solution">
+            <div class="proj-situation-lbl" id="proj-situation-lbl-2">Solução desenvolvida pela Virtual</div>
+            <ul id="proj-situation-step2"></ul>
+          </div>
+          <div class="proj-situation-connector">↓</div>
+          <div class="proj-situation-step step-result">
+            <div class="proj-situation-lbl" id="proj-situation-lbl-3">Resultado</div>
+            <ul id="proj-situation-step3"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Onde esse projeto se encaixa? (fluxograma, projetos ricos) -->
+      <div class="proj-modal-section" id="proj-modal-flow-wrap" style="display:none;">
+        <div class="proj-modal-section-title" id="proj-modal-flow-title">Onde esse projeto se encaixa?</div>
+        <div class="proj-flow" id="proj-flow"></div>
+        <p class="proj-flow-note" id="proj-flow-note"></p>
+      </div>
+
+      <div class="proj-modal-sub">Resultado</div>
+      <p class="proj-modal-result" id="proj-modal-result"></p>
+
+      <a href="#" id="proj-modal-cta" target="_blank" class="btn btn-ink btn-lg">Quero um projeto assim</a>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox da galeria -->
+<div class="proj-lightbox" id="proj-lightbox">
+  <img id="proj-lightbox-img" src="" alt="">
+</div>
 
 <script>
   // PRELOADER
@@ -238,7 +957,6 @@
       }, { threshold: 0.25 }).observe(el);
     });
 
-    // TEXT REVEAL on scroll
     const trObs = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (!e.isIntersecting) return;
@@ -249,28 +967,594 @@
     }, { threshold: 0.25 });
     document.querySelectorAll('.tr-wrap').forEach(el => trObs.observe(el));
   });
-  
-function filterCategory(cat) {
-  const btns = document.querySelectorAll('.active-filter, .btn-ghost');
-  btns.forEach(btn => {
-    if (btn.innerText.toLowerCase() === cat.toLowerCase() || (cat==='all' && btn.innerText.toLowerCase()==='todos')) {
-      btn.className = 'btn btn-sm btn-outline active-filter';
-    } else {
-      btn.className = 'btn btn-sm btn-ghost';
-    }
+
+  // ===== FILTRO DE CATEGORIA =====
+  function applyFilter(cat) {
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === cat);
+    });
+    let visibleCount = 0;
+    document.querySelectorAll('.proj-card').forEach(card => {
+      const match = cat === 'all' || card.dataset.cat === cat;
+      card.classList.toggle('hidden-cat', !match);
+      if (match) visibleCount++;
+    });
+    document.getElementById('portfolio-empty').style.display = visibleCount === 0 ? 'block' : 'none';
+  }
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
   });
 
-  const cards = document.querySelectorAll('.proj-card');
-  cards.forEach(card => {
-    const cardCat = card.getAttribute('data-cat');
-    if (cat === 'all' || cardCat === cat) {
-      card.style.display = 'block';
-    } else {
-      card.style.display = 'none';
-    }
+  // "Encontre projetos parecidos com o seu" — filtra e rola até a galeria
+  document.querySelectorAll('[data-goto]').forEach(card => {
+    card.addEventListener('click', () => {
+      applyFilter(card.dataset.goto);
+      document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   });
-}
 
+  // ===== DADOS DOS PROJETOS (para o modal) =====
+  const PROJETOS = {
+    'geminadas-12x30': {
+      rich: true,
+      cat: 'Residencial',
+      title: 'Estudo de Viabilidade para Geminadas em Lote Urbano 12x30',
+      img: 'assets/projetos/geminadas-12x30/fachada-01.jpg',
+      alt: 'Fachada de três residências geminadas contemporâneas com portões de desenho exclusivo',
+      context: 'O cliente possuía um terreno de 12 x 30 metros e buscava entender qual seria o melhor aproveitamento da área para um empreendimento voltado à venda ou locação.',
+      challenge: 'Mais do que desenhar uma fachada, o desafio era criar uma solução arquitetônica que equilibrasse aproveitamento do terreno, conforto dos futuros moradores, estética contemporânea, viabilidade construtiva e potencial de retorno sobre o investimento.',
+      solution: 'A Virtual desenvolveu um estudo arquitetônico para implantação de três unidades geminadas, distribuídas de forma a aproveitar a largura do terreno sem comprometer iluminação, ventilação e privacidade entre as residências. O projeto foi pensado para oferecer um imóvel compacto, moderno e funcional, atendendo às necessidades do mercado residencial atual.',
+      services: ['Projeto Arquitetônico'],
+      area: '360 m² (12x30m)', city: 'Brusque · SC', type: 'Residencial',
+      characteristics: [
+        { label: 'Terreno', value: '12 x 30 metros' },
+        { label: 'Tipologia', value: 'Residências Geminadas' },
+        { label: 'Finalidade', value: 'Investimento imobiliário' },
+        { label: 'Arquitetura', value: 'Contemporânea' },
+        { label: 'Pavimentos', value: '2' },
+        { label: 'Unidades', value: '3' }
+      ],
+      rooms: ['Sala', 'Cozinha integrada', 'Banheiro', 'Dormitórios', 'Sacada', 'Área externa privativa', 'Garagem'],
+      conceptText: 'Um dos principais objetivos foi criar uma identidade marcante, valorizando o empreendimento sem elevar excessivamente o custo de execução. A linguagem contemporânea utiliza:',
+      conceptList: ['Linhas retas', 'Volumes destacados', 'Contrastes entre revestimentos claros e escuros', 'Grandes esquadrias', 'Iluminação arquitetônica', 'Guarda-corpos metálicos', 'Portões com desenho exclusivo'],
+      conceptClosing: 'O resultado transmite modernidade e agrega valor ao imóvel.',
+      landUse: ['Garagem individual', 'Área privativa', 'Boa iluminação natural', 'Ventilação cruzada', 'Circulação funcional', 'Ambientes integrados'],
+      differentials: [
+        { title: 'Arquitetura contemporânea', text: 'Fachada limpa, elegante e valorizada por materiais de contraste.' },
+        { title: 'Pensado para investimento', text: 'Projeto desenvolvido considerando potencial de comercialização e valorização do empreendimento.' },
+        { title: 'Funcionalidade interna', text: 'Ambientes planejados para melhor aproveitamento interno.' },
+        { title: 'Implantação otimizada', text: 'Estudo desenvolvido considerando o melhor aproveitamento do terreno disponível.' }
+      ],
+      gallery: [
+        { cat: 'Fachada', images: [
+          { src: 'assets/projetos/geminadas-12x30/fachada-01.jpg', alt: 'Fachada frontal das três residências geminadas' },
+          { src: 'assets/projetos/geminadas-12x30/fachada-02.jpg', alt: 'Fachada em perspectiva com paisagismo' },
+          { src: 'assets/projetos/geminadas-12x30/fachada-03.jpg', alt: 'Detalhe angular da fachada e portões' }
+        ]},
+        { cat: 'Implantação', images: [
+          { src: 'assets/projetos/geminadas-12x30/implantacao-01.jpg', alt: 'Vista superior da implantação no terreno' },
+          { src: 'assets/projetos/geminadas-12x30/implantacao-02.jpg', alt: 'Vista dos fundos das três unidades' },
+          { src: 'assets/projetos/geminadas-12x30/implantacao-03-planta-superior.png', alt: 'Planta técnica do pavimento superior' },
+          { src: 'assets/projetos/geminadas-12x30/implantacao-04-planta-terreo.png', alt: 'Planta técnica do pavimento térreo' }
+        ]},
+        { cat: 'Áreas externas', images: [
+          { src: 'assets/projetos/geminadas-12x30/areas-externas-01.jpg', alt: 'Área externa privativa com paisagismo' },
+          { src: 'assets/projetos/geminadas-12x30/areas-externas-02.jpg', alt: 'Vista aérea da circulação e garagens' }
+        ]},
+        { cat: 'Ambientes internos', images: [
+          { src: 'assets/projetos/geminadas-12x30/ambientes-01.jpg', alt: 'Sala e cozinha integradas com escada' },
+          { src: 'assets/projetos/geminadas-12x30/ambientes-02.jpg', alt: 'Vista da sacada a partir do dormitório' },
+          { src: 'assets/projetos/geminadas-12x30/ambientes-03.jpg', alt: 'Vista da sacada com vegetação ao fundo' }
+        ]}
+      ],
+      whatDone: ['Estudo de implantação', 'Estudo de volumetria', 'Fachada arquitetônica', 'Layout interno', 'Modelagem 3D', 'Renderizações realistas', 'Análise de aproveitamento do terreno'],
+      fichaTecnica: [
+        ['Nome do projeto', 'Estudo de Geminadas Residenciais'],
+        ['Categoria', 'Residencial'],
+        ['Serviço', 'Projeto Arquitetônico'],
+        ['Finalidade', 'Estudo de Viabilidade'],
+        ['Terreno', '12 x 30 m'],
+        ['Pavimentos', '2'],
+        ['Quantidade de unidades', '3'],
+        ['Estilo', 'Contemporâneo'],
+        ['Status', 'Conceito / Estudo Arquitetônico'],
+        ['Desenvolvido por', 'Virtual Projetos de Engenharia e Interiores']
+      ],
+      result: 'O estudo demonstrou a viabilidade de implantação de três residências geminadas em um terreno de 12 x 30 metros, conciliando estética, funcionalidade e aproveitamento inteligente da área disponível. A proposta oferece uma solução arquitetônica moderna e adequada para empreendimentos residenciais, contribuindo para a valorização do investimento e para a qualidade dos futuros espaços residenciais.',
+      ctaLabel: 'Solicitar um estudo de viabilidade',
+      ctaMsg: 'Olá! Vi o Estudo de Viabilidade para Geminadas Residenciais no portfólio. Tenho um terreno e gostaria de um estudo de viabilidade parecido.'
+    },
+    'regularizacao-adequacao-unifamiliar': {
+      rich: true,
+      cat: 'Regularização',
+      title: 'Regularização e Adequação de Residência Unifamiliar',
+      img: 'assets/projetos/regularizacao-adequacao-unifamiliar/modelo-3d-01.jpg',
+      alt: 'Modelo tridimensional de residência unifamiliar em processo de regularização e adequação arquitetônica',
+      heroTagline: 'Regularizar um imóvel vai muito além da documentação.',
+      heroText: 'Cada imóvel possui uma realidade diferente. Neste projeto, a Virtual atuou de forma técnica para adequar uma residência existente às exigências legais, além de propor melhorias arquitetônicas que agregaram funcionalidade e valor ao imóvel.',
+      context: 'O cliente possuía uma residência em fase de construção que precisava ser regularizada perante os órgãos competentes.',
+      challenge: 'Além da documentação técnica necessária, havia a oportunidade de revisar alguns aspectos do projeto arquitetônico para melhorar a organização dos ambientes e garantir conformidade com as normas vigentes. O objetivo era transformar uma construção existente em um imóvel tecnicamente adequado, preparado para seguir sua execução de forma regular.',
+      solution: 'A Virtual realizou o levantamento da edificação existente, analisou suas características e desenvolveu um novo projeto arquitetônico contemplando as adequações necessárias para atender às exigências técnicas e legais. Além da regularização documental, o projeto buscou melhorar a distribuição dos espaços, tornando o dia a dia mais prático para os moradores.',
+      services: ['Regularização de Imóvel', 'Projeto Arquitetônico'],
+      area: '≈ 59 m² (área interna)', city: 'Brusque · SC', type: 'Regularização',
+      whatDone: ['Levantamento da edificação existente', 'Modelagem arquitetônica', 'Planta baixa atualizada', 'Cortes', 'Fachadas', 'Estudo da cobertura', 'Adequações arquitetônicas', 'Documentação técnica para regularização'],
+      landUseTitle: 'Principais adequações',
+      landUseText: 'Durante o desenvolvimento do projeto foram realizadas análises e ajustes para adequar a residência às exigências técnicas e proporcionar uma melhor organização dos ambientes. Entre as melhorias propostas destacam-se:',
+      landUse: ['Revisão da distribuição interna dos ambientes', 'Atualização das fachadas', 'Compatibilização da cobertura', 'Representação técnica completa da edificação', 'Documentação arquitetônica para regularização'],
+      conceptTitle: 'Por que a regularização é importante?',
+      conceptText: 'Muitas pessoas acreditam que regularizar um imóvel significa apenas produzir um projeto. Na prática, esse processo é muito mais amplo e pode ser fundamental para:',
+      conceptList: ['Vender o imóvel', 'Financiar', 'Averbar a construção', 'Obter documentação atualizada', 'Evitar problemas futuros relacionados à situação do imóvel'],
+      conceptClosing: 'Cada caso possui particularidades, por isso a análise técnica é indispensável.',
+      situation: {
+        step1: ['Residência em fase de construção.', 'Necessidade de regularização perante os órgãos competentes.', 'Documentação técnica inexistente ou desatualizada.'],
+        step2: ['Levantamento técnico da edificação.', 'Projeto arquitetônico atualizado.', 'Adequações para conformidade.', 'Documentação para regularização.'],
+        step3: ['Projeto regularizado.', 'Documentação organizada.', 'Imóvel preparado para seguir o processo legal.']
+      },
+      gallery: [
+        { cat: 'Modelo Tridimensional', caption: 'Visualização volumétrica da proposta arquitetônica.', images: [
+          { src: 'assets/projetos/regularizacao-adequacao-unifamiliar/modelo-3d-01.jpg', alt: 'Modelo tridimensional da residência, vista frontal' },
+          { src: 'assets/projetos/regularizacao-adequacao-unifamiliar/modelo-3d-02.jpg', alt: 'Modelo tridimensional com destaque na área de adequação' },
+          { src: 'assets/projetos/regularizacao-adequacao-unifamiliar/modelo-3d-03.jpg', alt: 'Modelo tridimensional, vista posterior' },
+          { src: 'assets/projetos/regularizacao-adequacao-unifamiliar/modelo-3d-04.jpg', alt: 'Modelo tridimensional, vista lateral' }
+        ]},
+        { cat: 'Planta Baixa', caption: 'Representação da organização dos ambientes e circulação interna.', images: [
+          { src: 'assets/projetos/regularizacao-adequacao-unifamiliar/planta-baixa.jpg', alt: 'Planta baixa cotada com dormitório, banheiro, cozinha/sala de estar e garagem' }
+        ]},
+        { cat: 'Cortes Técnicos', caption: 'Detalhamento da cobertura, alturas e elementos construtivos da edificação.', images: [
+          { src: 'assets/projetos/regularizacao-adequacao-unifamiliar/corte-tecnico.jpg', alt: 'Corte técnico mostrando alturas do telhado, cobertura e térreo' }
+        ]},
+        { cat: 'Fachadas', caption: 'Representação arquitetônica utilizada na documentação do projeto.', images: [
+          { src: 'assets/projetos/regularizacao-adequacao-unifamiliar/fachada.jpg', alt: 'Elevação técnica da fachada frontal' }
+        ]}
+      ],
+      fichaTecnica: [
+        ['Nome do projeto', 'Regularização e Adequação de Residência Unifamiliar'],
+        ['Categoria', 'Residencial'],
+        ['Tipo de imóvel', 'Casa Unifamiliar'],
+        ['Serviço', 'Regularização de Imóvel'],
+        ['Projeto', 'Arquitetônico'],
+        ['Situação', 'Edificação existente'],
+        ['Objetivo', 'Regularização e adequação'],
+        ['Status', 'Projeto Executado'],
+        ['Desenvolvido por', 'Virtual Projetos de Engenharia e Interiores']
+      ],
+      result: 'O projeto permitiu organizar tecnicamente a documentação da residência e adequar sua representação arquitetônica às condições existentes, oferecendo ao cliente um caminho seguro para regularização do imóvel. Além da documentação regularizada, as adequações propostas contribuíram para melhorar a funcionalidade da residência e valorizar o patrimônio.',
+      ctaLabel: 'Solicitar análise do imóvel',
+      ctaMsg: 'Olá! Vi o projeto de Regularização e Adequação de Residência Unifamiliar no portfólio. Meu imóvel também precisa de regularização — gostaria de uma análise técnica.'
+    },
+    'ampliacao-arquitetonico-estrutural': {
+      rich: true,
+      cat: 'Residencial',
+      title: 'Ampliação Residencial com Projeto Arquitetônico e Estrutural',
+      img: 'assets/projetos/ampliacao-arquitetonico-estrutural/arquitetonico-implantacao.jpg',
+      alt: 'Implantação e volumetria da ampliação de residência geminada',
+      heroTagline: 'Planejar uma ampliação é construir com segurança.',
+      heroText: 'Toda ampliação exige muito mais do que levantar novas paredes. É necessário avaliar a estrutura existente, integrar os novos ambientes ao imóvel e garantir que toda a intervenção seja tecnicamente segura. Neste projeto, a Virtual foi responsável pelo desenvolvimento dos projetos arquitetônico e estrutural para a ampliação de uma residência geminada.',
+      context: 'Os proprietários desejavam ampliar uma das unidades da residência, buscando mais espaço e melhor aproveitamento interno do imóvel.',
+      challenge: 'Como a construção já existia, o principal desafio era integrar a ampliação à edificação original, preservando sua estabilidade estrutural e mantendo uma linguagem arquitetônica coerente. Além disso, era necessário desenvolver toda a documentação técnica para orientar corretamente a execução da obra.',
+      solution: 'A Virtual desenvolveu um projeto completo de ampliação, contemplando tanto a arquitetura quanto o dimensionamento estrutural da nova área construída. O estudo envolveu a análise da construção existente, definição dos novos ambientes, compatibilização da estrutura e elaboração de toda a documentação técnica necessária para execução da obra. O resultado foi uma ampliação integrada ao imóvel, respeitando aspectos funcionais, estéticos e estruturais.',
+      services: ['Projeto Arquitetônico', 'Projeto Estrutural'],
+      area: '21,31 m² (área ampliada)', city: 'Brusque · SC', type: 'Residencial',
+      whatDone: ['Levantamento da construção existente', 'Projeto arquitetônico da ampliação', 'Adequação da planta baixa', 'Cortes e fachadas', 'Projeto estrutural', 'Dimensionamento de vigas', 'Dimensionamento de pilares', 'Detalhamento da fundação', 'Compatibilização entre arquitetura e estrutura', 'Documentação executiva'],
+      differentialsTitle: 'Principais soluções adotadas',
+      differentialsText: 'Durante o desenvolvimento do projeto foram estudados diferentes aspectos para garantir uma ampliação segura e funcional. Entre eles:',
+      differentials: [
+        { title: 'Integração entre antigo e novo', text: 'A nova área foi planejada para se conectar naturalmente à residência existente, preservando a funcionalidade dos ambientes.' },
+        { title: 'Segurança estrutural', text: 'Foi desenvolvido um projeto estrutural específico para suportar a nova construção, considerando cargas, fundações, vigas e pilares.' },
+        { title: 'Aproveitamento do espaço', text: 'A ampliação foi planejada para gerar novos ambientes sem comprometer a circulação e a organização da residência.' },
+        { title: 'Compatibilização', text: 'Arquitetura e estrutura foram compatibilizadas em conjunto, reduzindo interferências durante a execução da obra.' }
+      ],
+      insights: [
+        { title: 'Arquitetura', items: ['Definição dos novos ambientes.', 'Integração da ampliação à residência existente.', 'Estudo da circulação e iluminação.'] },
+        { title: 'Estrutura', items: ['Dimensionamento das fundações.', 'Projeto de vigas e pilares.', 'Compatibilização entre elementos estruturais.'] },
+        { title: 'Resultado', items: ['Ampliação planejada antes da execução.', 'Mais segurança durante a obra.', 'Redução de retrabalhos.', 'Melhor aproveitamento do investimento.'] }
+      ],
+      gallery: [
+        { cat: 'Projeto Arquitetônico', caption: 'Apresentação da planta baixa da ampliação.', images: [
+          { src: 'assets/projetos/ampliacao-arquitetonico-estrutural/arquitetonico-planta-cortes.jpg', alt: 'Planta baixa do pavimento térreo e superior com a área ampliada' }
+        ]},
+        { cat: 'Cortes Técnicos', caption: 'Detalhamento das novas áreas e integração com a edificação existente.', images: [
+          { src: 'assets/projetos/ampliacao-arquitetonico-estrutural/arquitetonico-planta-cortes.jpg', alt: 'Cortes técnicos mostrando a integração entre a área existente e a ampliação' }
+        ]},
+        { cat: 'Implantação', caption: 'Posicionamento da ampliação no terreno.', images: [
+          { src: 'assets/projetos/ampliacao-arquitetonico-estrutural/arquitetonico-implantacao.jpg', alt: 'Implantação no terreno e volumetria da cobertura' }
+        ]},
+        { cat: 'Projeto Estrutural', caption: 'Detalhamento de fundações, vigas, pilares e estrutura de apoio.', images: [
+          { src: 'assets/projetos/ampliacao-arquitetonico-estrutural/estrutural-fundacao-pilares.jpg', alt: 'Planta de fundação, pilares e detalhamento estrutural' },
+          { src: 'assets/projetos/ampliacao-arquitetonico-estrutural/estrutural-vigas.jpg', alt: 'Detalhamento de vigas e resumo de aço' }
+        ]}
+      ],
+      situationTitle: 'Antes da ampliação',
+      situation: {
+        labels: ['Situação existente', 'Necessidade identificada', 'Solução proposta'],
+        step1: ['Residência geminada com limitações de espaço para atender às novas necessidades dos moradores.'],
+        step2: ['Criar novos ambientes mantendo segurança estrutural e integração com a construção existente.'],
+        step3: ['Projeto arquitetônico aliado ao projeto estrutural, garantindo uma ampliação planejada e tecnicamente segura.']
+      },
+      conceptTitle: 'Por que um projeto estrutural é importante em ampliações?',
+      conceptText: 'Uma ampliação não consiste apenas em aumentar a área construída. Qualquer intervenção estrutural precisa ser calculada para garantir segurança e durabilidade. O projeto estrutural permite:',
+      conceptList: ['Dimensionar corretamente vigas, pilares e fundações', 'Distribuir as cargas da nova construção', 'Reduzir riscos durante a execução', 'Orientar a obra de forma técnica', 'Evitar improvisações no canteiro'],
+      conceptClosing: '',
+      fichaTecnica: [
+        ['Nome do projeto', 'Ampliação Residencial com Projeto Arquitetônico e Estrutural'],
+        ['Categoria', 'Residencial'],
+        ['Tipo de imóvel', 'Casa Geminada'],
+        ['Serviços', 'Projeto Arquitetônico + Projeto Estrutural'],
+        ['Objetivo', 'Ampliação da residência'],
+        ['Status', 'Projeto Executado'],
+        ['Desenvolvido por', 'Virtual Projetos de Engenharia e Interiores']
+      ],
+      result: 'O projeto possibilitou a ampliação da residência de forma organizada, segura e integrada à construção existente. A combinação entre projeto arquitetônico e estrutural proporcionou uma solução completa, preparada para orientar todas as etapas da execução da obra e oferecer mais conforto aos moradores.',
+      ctaLabel: 'Solicitar análise da ampliação',
+      ctaMsg: 'Olá! Estou pensando em ampliar meu imóvel e vi o projeto de Ampliação Residencial no portfólio. Gostaria de uma análise técnica.'
+    },
+    'levantamento-usucapiao': {
+      rich: true,
+      cat: 'Regularização',
+      title: 'Levantamento Topográfico para Processo de Usucapião',
+      img: 'assets/projetos/levantamento-usucapiao/levantamento-vertices.jpg',
+      alt: 'Levantamento topográfico com vértices e perímetro do imóvel',
+      heroTagline: 'Todo processo de usucapião começa com uma documentação técnica precisa.',
+      heroText: 'O levantamento topográfico é uma das etapas mais importantes para identificar corretamente os limites do imóvel e produzir a documentação necessária para dar suporte ao processo de regularização. Neste projeto, a Virtual desenvolveu o mapa planimétrico e o memorial descritivo utilizados em um processo de usucapião.',
+      context: 'O cliente precisava reunir toda a documentação técnica exigida para instruir um processo de usucapião.',
+      challenge: 'Para isso, era necessário identificar com precisão os limites da área ocupada, confrontações, medidas, coordenadas e demais informações técnicas exigidas pelos órgãos competentes e pelo profissional responsável pelo processo jurídico. O desafio era transformar uma ocupação existente em um levantamento técnico confiável e compatível com as normas cartográficas e cadastrais.',
+      solution: 'A Virtual realizou o levantamento da área e elaborou toda a documentação técnica necessária para subsidiar o processo de usucapião. Foram produzidos o mapa planimétrico e o memorial descritivo contendo as informações de perímetro, confrontações, coordenadas georreferenciadas, vértices e quadro de áreas, proporcionando maior segurança técnica ao processo.',
+      services: ['Mapa Planimétrico', 'Memorial Descritivo'],
+      area: '1.629,55 m² (gleba do usucapião)', city: 'Brusque · SC', type: 'Regularização',
+      whatDone: ['Levantamento topográfico da área', 'Identificação dos vértices', 'Delimitação do perímetro', 'Cálculo de área', 'Coordenadas georreferenciadas', 'Confrontações', 'Quadro de medidas', 'Memorial descritivo', 'Mapa planimétrico', 'Documentação técnica para processo de usucapião'],
+      glossaryTitle: 'Conceitos técnicos',
+      glossary: [
+        { term: 'O que é um Memorial Descritivo?', text: 'Documento técnico que descreve detalhadamente um imóvel, apresentando seus limites, confrontações, medidas e demais características necessárias para identificação da área. É frequentemente utilizado em processos de regularização, desmembramentos, usucapião, retificações de registro e outras demandas imobiliárias.' },
+        { term: 'O que é um Mapa Planimétrico?', text: 'Representa graficamente o imóvel e seus limites, indicando vértices, confrontantes, medidas e demais elementos utilizados para caracterizar tecnicamente a área. Esse documento complementa o memorial descritivo, unindo texto e representação gráfica.' }
+      ],
+      differentialsTitle: 'Diferenciais do Projeto',
+      differentials: [
+        { title: 'Precisão Técnica', text: 'Levantamento desenvolvido utilizando metodologia compatível com as exigências técnicas aplicáveis, oferecendo suporte técnico ao processo de regularização.' },
+        { title: 'Informações Completas', text: 'Apresentação de área, perímetro, confrontações, coordenadas e identificação dos vértices.' },
+        { title: 'Compatibilidade', text: 'Documentação preparada para integração com os demais profissionais envolvidos no processo.' }
+      ],
+      flowchart: {
+        title: 'Onde esse projeto se encaixa?',
+        steps: ['Levantamento Técnico', 'Documentação Técnica', 'Processo de Regularização', 'Acompanhamento com advogado/cartório (quando aplicável)'],
+        activeCount: 2,
+        note: 'A Virtual é responsável pela base técnica do processo. A condução jurídica é feita pelo profissional responsável pelo caso.'
+      },
+      gallery: [
+        { cat: 'Levantamento da Área', caption: 'Representação da área objeto do levantamento topográfico.', images: [
+          { src: 'assets/projetos/levantamento-usucapiao/levantamento-vertices.jpg', alt: 'Croqui com os vértices V1 a V6 e o perímetro do imóvel' }
+        ]},
+        { cat: 'Mapa Planimétrico', caption: 'Delimitação da área com vértices, confrontações e legenda técnica.', images: [
+          { src: 'assets/projetos/levantamento-usucapiao/levantamento-vertices.jpg', alt: 'Croqui com os vértices V1 a V6 e o perímetro do imóvel' },
+          { src: 'assets/projetos/levantamento-usucapiao/mapa-legenda.jpg', alt: 'Legenda técnica do mapa planimétrico' }
+        ]},
+        { cat: 'Memorial Descritivo', caption: 'Quadro de áreas e perímetro extraídos do memorial descritivo.', images: [
+          { src: 'assets/projetos/levantamento-usucapiao/quadro-areas.jpg', alt: 'Quadro de áreas e perímetro da gleba do usucapião' }
+        ]},
+        { cat: 'Localização', caption: 'Representação da posição do imóvel em relação ao entorno.', images: [
+          { src: 'assets/projetos/levantamento-usucapiao/localizacao.jpg', alt: 'Vista aérea com a área do levantamento destacada em relação ao entorno' }
+        ]}
+      ],
+      conceptTitle: 'Quando esse tipo de projeto é necessário?',
+      conceptText: 'Você pode precisar desse tipo de documentação quando:',
+      conceptList: ['Está realizando um processo de usucapião', 'Precisa regularizar um imóvel', 'Vai fazer retificação de matrícula', 'Necessita identificar corretamente os limites de um terreno', 'Vai desmembrar ou unificar áreas', 'Precisa atualizar documentação imobiliária'],
+      conceptClosing: '',
+      fichaTecnica: [
+        ['Nome do projeto', 'Levantamento Topográfico para Processo de Usucapião'],
+        ['Categoria', 'Regularização de Imóveis'],
+        ['Tipo de projeto', 'Levantamento Topográfico'],
+        ['Serviços', 'Mapa Planimétrico + Memorial Descritivo'],
+        ['Finalidade', 'Processo de Usucapião'],
+        ['Status', 'Projeto Executado'],
+        ['Desenvolvido por', 'Virtual Projetos de Engenharia e Interiores']
+      ],
+      result: 'A elaboração do mapa planimétrico e do memorial descritivo forneceu a base técnica necessária para instrução do processo de usucapião, permitindo identificar corretamente a área ocupada e organizar as informações essenciais para a regularização do imóvel.',
+      ctaLabel: 'Solicitar uma análise do imóvel',
+      ctaMsg: 'Olá! Vi o projeto de Levantamento Topográfico para Usucapião no portfólio. Preciso regularizar um terreno / reunir documentação técnica e gostaria de uma análise.'
+    }
+  };
+
+
+  // ===== MODAL =====
+  const overlay = document.getElementById('proj-modal-overlay');
+  let lastFocused = null;
+
+  function showSection(id, show) {
+    document.getElementById(id).style.display = show ? '' : 'none';
+  }
+
+  function openModal(id) {
+    const p = PROJETOS[id];
+    if (!p) return;
+    document.getElementById('proj-modal-img').src = p.img;
+    document.getElementById('proj-modal-img').alt = p.alt;
+    document.getElementById('proj-modal-kicker').textContent = p.cat;
+    document.getElementById('proj-modal-title').textContent = p.title;
+    document.getElementById('proj-modal-context').textContent = p.context;
+    document.getElementById('proj-modal-challenge').textContent = p.challenge;
+    document.getElementById('proj-modal-solution').textContent = p.solution;
+    document.getElementById('proj-modal-result').textContent = p.result;
+
+    document.getElementById('proj-modal-panel').classList.toggle('rich', !!p.rich);
+
+    showSection('proj-modal-tagline-wrap', !!p.heroTagline);
+    if (p.heroTagline) {
+      document.getElementById('proj-modal-tagline').textContent = p.heroTagline;
+      document.getElementById('proj-modal-hero-text').textContent = p.heroText || '';
+    }
+
+    const tagsEl = document.getElementById('proj-modal-tags');
+    tagsEl.innerHTML = '';
+    [p.type, p.area, p.city].forEach(t => {
+      const span = document.createElement('span');
+      span.className = 'proj-tag';
+      span.textContent = t;
+      tagsEl.appendChild(span);
+    });
+
+    const svcEl = document.getElementById('proj-modal-services-list');
+    svcEl.innerHTML = '';
+    p.services.forEach(s => {
+      const li = document.createElement('li');
+      li.textContent = s;
+      svcEl.appendChild(li);
+    });
+
+    const factsEl = document.getElementById('proj-modal-facts');
+    factsEl.innerHTML = '';
+    [['Área', p.area], ['Cidade', p.city], ['Categoria', p.type]].forEach(([lbl, val]) => {
+      const div = document.createElement('div');
+      div.innerHTML = '<div class="proj-modal-fact-lbl">' + lbl + '</div><div class="proj-modal-fact-val">' + val + '</div>';
+      factsEl.appendChild(div);
+    });
+
+    // ---- Seções opcionais (projetos ricos) ----
+
+    // Ficha Técnica
+    showSection('proj-modal-ficha-wrap', !!p.fichaTecnica);
+    if (p.fichaTecnica) {
+      const el = document.getElementById('proj-modal-ficha');
+      el.innerHTML = '';
+      p.fichaTecnica.forEach(([lbl, val]) => {
+        const row = document.createElement('div');
+        row.className = 'proj-modal-ficha-row';
+        row.innerHTML = '<span class="proj-modal-ficha-lbl">' + lbl + '</span><span class="proj-modal-ficha-val">' + val + '</span>';
+        el.appendChild(row);
+      });
+    }
+
+    // Principais características + ambientes planejados
+    showSection('proj-modal-characteristics-wrap', !!p.characteristics);
+    if (p.characteristics) {
+      const el = document.getElementById('proj-modal-characteristics');
+      el.innerHTML = '';
+      p.characteristics.forEach(({ label, value }) => {
+        const div = document.createElement('div');
+        div.innerHTML = '<div class="proj-modal-fact-lbl">' + label + '</div><div class="proj-modal-fact-val">' + value + '</div>';
+        el.appendChild(div);
+      });
+      const roomsEl = document.getElementById('proj-modal-rooms');
+      roomsEl.innerHTML = '';
+      (p.rooms || []).forEach(r => {
+        const span = document.createElement('span');
+        span.className = 'proj-tag';
+        span.textContent = r;
+        roomsEl.appendChild(span);
+      });
+    }
+
+    // Conceito arquitetônico (ou seção reaproveitada com título customizado)
+    showSection('proj-modal-concept-wrap', !!p.conceptText);
+    if (p.conceptText) {
+      document.getElementById('proj-modal-concept-title').textContent = p.conceptTitle || 'Conceito arquitetônico';
+      document.getElementById('proj-modal-concept-text').textContent = p.conceptText;
+      const listEl = document.getElementById('proj-modal-concept-list');
+      listEl.innerHTML = '';
+      (p.conceptList || []).forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        listEl.appendChild(li);
+      });
+      document.getElementById('proj-modal-concept-closing').textContent = p.conceptClosing || '';
+    }
+
+    // Aproveitamento do terreno / Principais adequações
+    showSection('proj-modal-landuse-wrap', !!p.landUse);
+    if (p.landUse) {
+      document.getElementById('proj-modal-landuse-title').textContent = p.landUseTitle || 'Aproveitamento do terreno';
+      document.getElementById('proj-modal-landuse-text').textContent = p.landUseText || '';
+      const el = document.getElementById('proj-modal-landuse-list');
+      el.innerHTML = '';
+      p.landUse.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        el.appendChild(li);
+      });
+    }
+
+    // Diferenciais do projeto
+    showSection('proj-modal-differentials-wrap', !!p.differentials);
+    if (p.differentials) {
+      document.getElementById('proj-modal-differentials-title').textContent = p.differentialsTitle || 'Diferenciais do projeto';
+      document.getElementById('proj-modal-differentials-text').textContent = p.differentialsText || '';
+      const el = document.getElementById('proj-modal-diff-grid');
+      el.innerHTML = '';
+      p.differentials.forEach(({ title, text }) => {
+        const div = document.createElement('div');
+        div.className = 'proj-modal-diff-card';
+        div.innerHTML = '<div class="proj-modal-diff-title">' + title + '</div><div class="proj-modal-diff-text">' + text + '</div>';
+        el.appendChild(div);
+      });
+    }
+
+    // Por trás do projeto (insights por disciplina)
+    showSection('proj-modal-insights-wrap', !!p.insights);
+    if (p.insights) {
+      const el = document.getElementById('proj-modal-insights-grid');
+      el.innerHTML = '';
+      p.insights.forEach(({ title, items }) => {
+        const card = document.createElement('div');
+        card.className = 'proj-insight-card';
+        const h = document.createElement('div');
+        h.className = 'proj-insight-title';
+        h.textContent = title;
+        const ul = document.createElement('ul');
+        items.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          ul.appendChild(li);
+        });
+        card.appendChild(h);
+        card.appendChild(ul);
+        el.appendChild(card);
+      });
+    }
+
+    // Galeria categorizada
+    showSection('proj-modal-gallery-wrap', !!p.gallery);
+    if (p.gallery) {
+      const el = document.getElementById('proj-modal-gallery');
+      el.innerHTML = '';
+      p.gallery.forEach(group => {
+        const wrap = document.createElement('div');
+        wrap.className = 'proj-modal-gallery-group';
+        const lbl = document.createElement('div');
+        lbl.className = 'proj-modal-gallery-lbl';
+        lbl.textContent = group.cat;
+        wrap.appendChild(lbl);
+        if (group.caption) {
+          const cap = document.createElement('p');
+          cap.className = 'proj-modal-gallery-caption';
+          cap.textContent = group.caption;
+          wrap.appendChild(cap);
+        }
+        const grid = document.createElement('div');
+        grid.className = 'proj-modal-gallery-grid';
+        group.images.forEach(img => {
+          const el2 = document.createElement('img');
+          el2.src = img.src;
+          el2.alt = img.alt;
+          el2.loading = 'lazy';
+          el2.addEventListener('click', () => openLightbox(img.src, img.alt));
+          grid.appendChild(el2);
+        });
+        wrap.appendChild(grid);
+        el.appendChild(wrap);
+      });
+    }
+
+    // O que foi desenvolvido
+    showSection('proj-modal-whatdone-wrap', !!p.whatDone);
+    if (p.whatDone) {
+      const el = document.getElementById('proj-modal-whatdone-list');
+      el.innerHTML = '';
+      p.whatDone.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        el.appendChild(li);
+      });
+    }
+
+    // Conceitos técnicos / glossário
+    showSection('proj-modal-glossary-wrap', !!p.glossary);
+    if (p.glossary) {
+      document.getElementById('proj-modal-glossary-title').textContent = p.glossaryTitle || 'Conceitos técnicos';
+      const el = document.getElementById('proj-modal-glossary-grid');
+      el.innerHTML = '';
+      p.glossary.forEach(({ term, text }) => {
+        const div = document.createElement('div');
+        div.className = 'proj-modal-diff-card';
+        div.innerHTML = '<div class="proj-modal-diff-title">' + term + '</div><div class="proj-modal-diff-text">' + text + '</div>';
+        el.appendChild(div);
+      });
+    }
+
+    // Situação do Cliente
+    showSection('proj-modal-situation-wrap', !!p.situation);
+    if (p.situation) {
+      document.getElementById('proj-modal-situation-title').textContent = p.situationTitle || 'Situação do Cliente';
+      const labels = p.situation.labels || ['Situação inicial', 'Solução desenvolvida pela Virtual', 'Resultado'];
+      document.getElementById('proj-situation-lbl-1').textContent = labels[0];
+      document.getElementById('proj-situation-lbl-2').textContent = labels[1];
+      document.getElementById('proj-situation-lbl-3').textContent = labels[2];
+      [['proj-situation-step1', p.situation.step1], ['proj-situation-step2', p.situation.step2], ['proj-situation-step3', p.situation.step3]]
+        .forEach(([elId, items]) => {
+          const el = document.getElementById(elId);
+          el.innerHTML = '';
+          (items || []).forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            el.appendChild(li);
+          });
+        });
+    }
+
+    // Onde esse projeto se encaixa? (fluxograma)
+    showSection('proj-modal-flow-wrap', !!p.flowchart);
+    if (p.flowchart) {
+      document.getElementById('proj-modal-flow-title').textContent = p.flowchart.title || 'Onde esse projeto se encaixa?';
+      document.getElementById('proj-flow-note').textContent = p.flowchart.note || '';
+      const el = document.getElementById('proj-flow');
+      el.innerHTML = '';
+      const activeCount = p.flowchart.activeCount || 0;
+      p.flowchart.steps.forEach((label, i) => {
+        if (i > 0) {
+          const arrow = document.createElement('div');
+          arrow.className = 'proj-flow-arrow';
+          arrow.textContent = '↓';
+          el.appendChild(arrow);
+        }
+        const step = document.createElement('div');
+        step.className = 'proj-flow-step ' + (i < activeCount ? 'flow-active' : 'flow-context');
+        step.textContent = label;
+        el.appendChild(step);
+      });
+    }
+
+    const ctaEl = document.getElementById('proj-modal-cta');
+    ctaEl.textContent = p.ctaLabel || 'Quero um projeto assim';
+    ctaEl.href = 'https://wa.me/5547991134446?text=' +
+      encodeURIComponent(p.ctaMsg || ('Olá! Vi o projeto "' + p.title + '" no portfólio e gostaria de um projeto parecido.'));
+
+    lastFocused = document.activeElement;
+    overlay.classList.add('open');
+    overlay.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+    document.getElementById('proj-modal-close').focus();
+  }
+
+  // ---- Lightbox da galeria ----
+  const lightbox = document.getElementById('proj-lightbox');
+  function openLightbox(src, alt) {
+    document.getElementById('proj-lightbox-img').src = src;
+    document.getElementById('proj-lightbox-img').alt = alt;
+    lightbox.classList.add('open');
+  }
+  function closeLightbox() { lightbox.classList.remove('open'); }
+  lightbox.addEventListener('click', closeLightbox);
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+
+  document.querySelectorAll('[data-proj]').forEach(btn => {
+    btn.addEventListener('click', () => openModal(btn.dataset.proj));
+  });
+  document.getElementById('proj-modal-close').addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (lightbox.classList.contains('open')) { closeLightbox(); return; }
+    if (overlay.classList.contains('open')) closeModal();
+  });
+
+  // DEEP-LINK ?projeto= — abre o modal do projeto direto (usado pelos cards da home)
+  document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const projId = params.get('projeto');
+    if (projId && PROJETOS[projId]) openModal(projId);
+  });
 </script>
 </body>
 </html>

@@ -3,20 +3,318 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Solicitar Orçamento — Virtual Engenharia</title>
-  <meta name="description" content="Preencha seus dados de obra e receba uma avaliação técnica gratuita via WhatsApp.">
+  <title>Fale com a Virtual — Vamos Conversar Sobre o Seu Projeto?</title>
+  <meta name="description" content="Conte sua situação e a Virtual Engenharia orienta os melhores próximos passos para construir, reformar, regularizar ou transformar seu imóvel. Atendimento por WhatsApp, e-mail ou ligação.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
-  
+  <link rel="icon" type="image/png" href="assets/logo/simbolo-favicon.png">
+  <style>
+    /* ====== PAGE-SPECIFIC STYLES — Contato ====== */
+
+    /* Shared section header (copied from servicos.html / nao-sei-por-onde-comecar.html) */
+    .section-home { padding: 120px 0; position: relative; }
+    .s-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .s-title {
+      font-family: var(--fd);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 16px;
+      letter-spacing: -.01em;
+    }
+    .s-subtitle {
+      font-size: 17px;
+      color: var(--ink-mid);
+      line-height: 1.75;
+      max-width: 560px;
+    }
+    .s-header { margin-bottom: 0; }
+    .s-header.centered { text-align: center; }
+    .s-header.centered .s-subtitle { margin: 0 auto; }
+
+    /* Hero */
+    .ct-hero {
+      padding: 200px 0 100px;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(32,133,168,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(32,133,168,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .ct-hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    /* Cards de categorias (copiado do padrão .sit-*) */
+    .sit-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .sit-card {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 26px;
+      cursor: pointer;
+      transition: all 0.3s var(--ease);
+      position: relative;
+      overflow: hidden;
+      font-family: var(--fb);
+    }
+    .sit-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--g-brand-h);
+      transform: scaleX(0);
+      transition: transform 0.3s var(--ease);
+      transform-origin: left;
+    }
+    .sit-card:hover { border-color: rgba(32,133,168,0.25); box-shadow: var(--sh2); transform: translateY(-4px); }
+    .sit-card:hover::after { transform: scaleX(1); }
+    .sit-icon {
+      width: 40px; height: 40px;
+      background: rgba(32,133,168,0.08);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+      color: var(--teal);
+    }
+    .sit-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+    .sit-title { font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+    .sit-desc { font-size: 14px; color: var(--ink-mid); line-height: 1.65; }
+
+    /* Não tenha receio */
+    .welcome-note { background: var(--bg-white); text-align: center; }
+    .welcome-note-inner { max-width: 680px; margin: 0 auto; }
+    .welcome-note p { margin-bottom: 18px; }
+    .welcome-note p:last-child { margin-bottom: 0; }
+
+    /* Formulário */
+    .form-layout {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 32px;
+      align-items: start;
+      margin-top: 48px;
+    }
+    .form-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 44px;
+    }
+    .form-block { margin-top: 22px; }
+    .form-block:first-child { margin-top: 0; }
+    .form-block-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    /* Checkbox / radio pills */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+    .chk-grid, .radio-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .chk-pill, .radio-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink-mid);
+      cursor: pointer;
+      transition: all .25s var(--ease);
+      user-select: none;
+    }
+    .chk-pill:hover, .radio-pill:hover { border-color: rgba(32,133,168,0.35); }
+    .chk-input:checked + .chk-pill,
+    .radio-input:checked + .radio-pill {
+      border-color: var(--teal);
+      background: rgba(32,133,168,0.08);
+      color: var(--teal);
+      font-weight: 700;
+    }
+    .chk-input:focus-visible + .chk-pill,
+    .radio-input:focus-visible + .radio-pill {
+      outline: 2px solid var(--teal);
+      outline-offset: 2px;
+    }
+
+    /* Upload zone */
+    .upload-zone {
+      position: relative;
+      border: 1.5px dashed var(--border);
+      border-radius: 14px;
+      padding: 28px 20px;
+      text-align: center;
+      background: var(--bg);
+      transition: border-color .25s var(--ease), background .25s var(--ease);
+    }
+    .upload-zone:hover { border-color: var(--teal); background: rgba(32,133,168,0.03); }
+    .upload-zone input[type="file"] {
+      position: absolute; inset: 0;
+      opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .upload-hint { font-size: 11px; color: var(--ink-muted); margin-top: 6px; }
+    .upload-list {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 14px;
+    }
+    .upload-list li {
+      font-size: 11px; font-weight: 600; color: var(--teal-d);
+      background: rgba(32,133,168,0.08);
+      border: 1px solid rgba(32,133,168,0.18);
+      padding: 6px 12px; border-radius: 999px;
+    }
+
+    .form-note { font-size: 12px; color: var(--ink-muted); text-align: center; margin-top: 16px; }
+
+    /* Sidebar "Por que falar com a Virtual" */
+    .why-card {
+      background: var(--bg-dark);
+      color: #F4F4F0;
+      border-radius: 20px;
+      padding: 40px 34px;
+      position: sticky;
+      top: 120px;
+    }
+    .why-card-title {
+      font-family: var(--fd);
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 22px;
+      line-height: 1.3;
+    }
+    .why-card ul { display: flex; flex-direction: column; gap: 14px; }
+    .why-card li {
+      font-size: 14px;
+      line-height: 1.55;
+      color: rgba(244,244,240,0.8);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .why-card li::before {
+      content: '✓';
+      color: var(--mint);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Atendimento rápido */
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .quick-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 26px;
+      transition: all .3s var(--ease);
+    }
+    a.quick-card:hover { border-color: rgba(37,211,102,0.4); box-shadow: var(--sh); transform: translateY(-3px); }
+    .quick-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: rgba(32,133,168,0.08);
+      color: var(--teal);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .quick-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+    .quick-title { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+    .quick-text { font-size: 13px; color: var(--ink-mid); line-height: 1.6; }
+    .region-note {
+      margin: 32px auto 0;
+      padding: 24px 28px;
+      background: var(--bg-alt);
+      border-radius: 14px;
+      max-width: 720px;
+      text-align: center;
+    }
+    .region-note p { font-size: 14px; color: var(--ink-mid); line-height: 1.75; }
+    .region-note p:first-child { color: var(--ink); font-weight: 700; margin-bottom: 8px; font-size: 15px; }
+
+    /* Timeline override (4 passos) */
+    .timeline.steps-4 { grid-template-columns: repeat(4, 1fr); }
+
+    /* Final CTA (copiado das outras páginas) */
+    .final-cta { background: var(--bg-dark); text-align: center; }
+    .final-cta-eyebrow {
+      font-size: 10px; font-weight: 700; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--mint); margin-bottom: 24px;
+    }
+    .final-cta-h2 {
+      font-family: var(--fd);
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      font-weight: 800; line-height: 1.05; color: #F4F4F0;
+      margin-bottom: 20px; max-width: 700px; margin-left: auto; margin-right: auto;
+    }
+    .final-cta-text {
+      font-size: 15px; color: rgba(244,244,240,0.6); line-height: 1.7;
+      max-width: 520px; margin: 0 auto 48px;
+    }
+    .final-cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .sit-grid { grid-template-columns: repeat(2, 1fr); }
+      .quick-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 1024px) {
+      .form-layout { grid-template-columns: 1fr; }
+      .why-card { position: static; }
+    }
+    @media (max-width: 768px) {
+      .form-card { padding: 28px 22px; }
+      .f-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .section-home { padding: 80px 0; }
+      .sit-grid { grid-template-columns: 1fr; }
+      .quick-grid { grid-template-columns: 1fr; }
+      .timeline.steps-4 { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
 <!-- PRELOADER -->
 <div class="preloader" id="preloader">
   <div class="pre-logo">
-    <img src="LOGOTIPO/SEM FUNDO/PRINCIPAL/1.png" alt="Virtual Engenharia" style="max-height: 52px; width: auto; object-fit: contain;">
+    <img src="assets/logo/sem-fundo-principal-1.png" alt="Virtual Engenharia" style="max-height: 52px; width: auto; object-fit: contain;">
   </div>
   <div class="pre-bar-wrap"><div class="pre-bar" id="pre-bar"></div></div>
 </div>
@@ -35,10 +333,10 @@
       <nav class="h-nav-l">
         <a href="index.html" class="">Início</a>
         <a href="servicos.html" class="">Serviços</a>
-        <a href="nao-sei.html" class="">Não Sei</a>
+        <a href="nao-sei-por-onde-comecar.html" class="">Não Sei Por Onde Começar</a>
       </nav>
       <a href="index.html" class="h-logo">
-        <img src="LOGOTIPO/SEM FUNDO/PRINCIPAL/1.png" alt="Virtual Engenharia" style="max-height: 32px; width: auto; object-fit: contain;">
+        <img src="assets/logo/sem-fundo-principal-1.png" alt="Virtual Engenharia" style="max-height: 32px; width: auto; object-fit: contain;">
       </a>
       <nav class="h-nav-r">
         <a href="projetos.html" class="">Projetos</a>
@@ -51,98 +349,373 @@
 </header>
 
 
-<section class="section" style="padding-top:180px;">
+<!-- =========================================
+     1. HERO
+     ========================================= -->
+<section class="ct-hero">
   <div class="w">
     <div class="s-num" data-aos="fade-up">Orçamento</div>
-    <h1 class="s-h" data-aos="fade-up" data-aos-delay="80">Fale com a<br><span class="accent">Virtual</span></h1>
+    <h1 class="s-h" style="margin-bottom:24px;" data-aos="fade-up" data-aos-delay="80">
+      Vamos conversar sobre<br>o seu <span class="accent">projeto</span>?
+    </h1>
+    <p class="tx-blg" style="max-width:620px;margin-bottom:12px;" data-aos="fade-up" data-aos-delay="120">
+      Seja para construir, reformar, regularizar um imóvel ou transformar um ambiente, nossa equipe
+      está pronta para entender sua necessidade e orientar você sobre os próximos passos.
+    </p>
+    <p class="tx-blg" style="max-width:620px;margin-bottom:40px;" data-aos="fade-up" data-aos-delay="160">
+      Você não precisa saber exatamente qual serviço contratar. Basta contar sua situação.
+    </p>
+    <div class="ct-hero-cta" data-aos="fade-up" data-aos-delay="200">
+      <a href="https://wa.me/5547991134446?text=Ol%C3%A1!%20Gostaria%20de%20conversar%20sobre%20o%20meu%20projeto." target="_blank" class="btn btn-ink btn-lg">Falar pelo WhatsApp</a>
+      <a href="#formulario" class="btn btn-outline btn-lg">Solicitar orçamento</a>
+    </div>
+  </div>
+</section>
 
-    <div class="intro-layout" style="margin-top:40px;" data-aos="fade-up" data-aos-delay="160">
-      <!-- Contact Info -->
-      <div>
-        <div class="tx-xs mb4">Canais de Contato</div>
-        <p class="tx-cap mb8" style="max-width:320px;">Utilize nossos canais oficiais para atendimento direto, ou preencha o formulário ao lado para uma proposta técnica mais detalhada.</p>
-        
-        <div style="display:flex;flex-direction:column;gap:20px;margin-top:32px;">
-          <div>
-            <p class="tx-over mb4" style="font-size:9px;">E-mail Oficial</p>
-            <a href="mailto:contato@virtual.com.br" class="tx-bmd" style="border-bottom:1px solid var(--teal);padding-bottom:2px;">contato@virtual.com.br</a>
-          </div>
-          <div>
-            <p class="tx-over mb4" style="font-size:9px;">WhatsApp</p>
-            <a href="https://wa.me/5547991134446" class="tx-bmd" style="border-bottom:1px solid var(--teal);padding-bottom:2px;">(11) 99999-9999</a>
-          </div>
-          <div>
-            <p class="tx-over mb4" style="font-size:9px;">Área de Cobertura</p>
-            <p class="tx-cap">São Paulo Capital, Campinas, Sorocaba e região metropolitana.</p>
-          </div>
-        </div>
-      </div>
 
-      <!-- Interactive Form -->
-      <div class="card" style="padding:32px;">
-        <div class="tx-over mb6">Solicitar Proposta</div>
-        <form action="#" id="budget-form" onsubmit="handleFormSubmit(event)">
+<!-- =========================================
+     2. COMO PODEMOS AJUDAR?
+     ========================================= -->
+<section class="section-home" style="background:var(--bg-alt);">
+  <div class="w">
+    <div class="s-header centered">
+      <div class="s-eyebrow" data-aos="fade-up">Ponto de partida</div>
+      <h2 class="s-title" data-aos="fade-up" data-aos-delay="60">Como podemos ajudar?</h2>
+    </div>
+
+    <div class="sit-grid">
+      <button type="button" class="sit-card" data-quiz-obj="construir" data-aos="fade-up" data-aos-delay="60">
+        <div class="sit-icon"><svg viewBox="0 0 24 24"><rect x="2" y="10" width="20" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/><line x1="12" y1="14" x2="12" y2="17"/></svg></div>
+        <div class="sit-title">Quero construir</div>
+        <p class="sit-desc">Projetos completos para transformar sua ideia em uma obra segura.</p>
+      </button>
+      <button type="button" class="sit-card" data-quiz-obj="reformar" data-aos="fade-up" data-aos-delay="120">
+        <div class="sit-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+        <div class="sit-title">Quero reformar</div>
+        <p class="sit-desc">Acompanhamento técnico para reformas residenciais e comerciais.</p>
+      </button>
+      <button type="button" class="sit-card" data-quiz-obj="regularizar" data-aos="fade-up" data-aos-delay="180">
+        <div class="sit-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="11" x2="15" y2="11"/></svg></div>
+        <div class="sit-title">Quero regularizar um imóvel</div>
+        <p class="sit-desc">Auxiliamos na documentação e regularização do seu patrimônio.</p>
+      </button>
+      <button type="button" class="sit-card" data-quiz-obj="empresa" data-aos="fade-up" data-aos-delay="60">
+        <div class="sit-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="sit-title">Tenho uma empresa</div>
+        <p class="sit-desc">Projetos para comércios, clínicas, escritórios, galpões e outros empreendimentos.</p>
+      </button>
+      <button type="button" class="sit-card" data-quiz-obj="dividir" data-aos="fade-up" data-aos-delay="120">
+        <div class="sit-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/></svg></div>
+        <div class="sit-title">Tenho um terreno</div>
+        <p class="sit-desc">Projetos para parcelamento de solo, desmembramentos e regularizações.</p>
+      </button>
+      <button type="button" class="sit-card" data-quiz-obj="interiores" data-aos="fade-up" data-aos-delay="180">
+        <div class="sit-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div>
+        <div class="sit-title">Quero melhorar meus ambientes</div>
+        <p class="sit-desc">Projetos de interiores que unem funcionalidade, conforto e estética.</p>
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     3. NÃO TENHA RECEIO
+     ========================================= -->
+<section class="section-home welcome-note">
+  <div class="w">
+    <div class="welcome-note-inner">
+      <div class="tr-wrap"><div class="tr-content">
+        <h2 class="tx-md" style="margin-bottom:24px;">Não tenha receio de<br><span class="g-txt">entrar em contato</span></h2>
+      </div></div>
+      <p class="tx-blg" data-aos="fade-up" data-aos-delay="80">
+        É muito comum recebermos mensagens como <em>"não sei nem se preciso de um projeto"</em> ou
+        <em>"não faço ideia por onde começar"</em>. E tudo bem.
+      </p>
+      <p class="tx-blg" data-aos="fade-up" data-aos-delay="140">
+        Nossa primeira conversa existe justamente para entender sua situação e orientar você da
+        melhor forma possível.
+      </p>
+      <p class="tx-blg" data-aos="fade-up" data-aos-delay="200">
+        Não importa se você está realizando um sonho ou tentando resolver um problema antigo.
+        Estamos aqui para ajudar.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     4. FORMULÁRIO
+     ========================================= -->
+<section class="section-home" id="formulario" style="background:var(--bg-alt);">
+  <div class="w">
+    <div class="s-header">
+      <div class="s-eyebrow" data-aos="fade-up">Vamos começar</div>
+      <h2 class="s-title" data-aos="fade-up" data-aos-delay="60">Conte um pouco sobre o seu projeto</h2>
+      <p class="s-subtitle" data-aos="fade-up" data-aos-delay="120">
+        Não é um formulário frio. Quanto mais você contar, melhor conseguimos te orientar.
+      </p>
+    </div>
+
+    <div class="form-layout">
+      <div class="form-card" data-aos="fade-up" data-aos-delay="160">
+        <form id="budget-form" onsubmit="handleFormSubmit(event)">
+
           <div class="f-grid">
             <div class="f-group">
-              <label class="f-label" for="c_nome">Nome Completo</label>
+              <label class="f-label" for="c_nome">Nome completo</label>
               <input type="text" class="f-inp" id="c_nome" required placeholder="Ex: Ana Maria">
             </div>
             <div class="f-group">
               <label class="f-label" for="c_whats">WhatsApp</label>
-              <input type="tel" class="f-inp" id="c_whats" required placeholder="Ex: (11) 99999-9999">
-            </div>
-          </div>
-          
-          <div class="f-grid mt8" style="margin-top:16px;">
-            <div class="f-group">
-              <label class="f-label" for="c_cidade">Cidade</label>
-              <input type="text" class="f-inp" id="c_cidade" required placeholder="Ex: Campinas">
-            </div>
-            <div class="f-group">
-              <label class="f-label" for="c_tipo">Tipo do Imóvel</label>
-              <select class="f-inp" id="c_tipo">
-                <option value="residencial">Casa / Residência</option>
-                <option value="apartamento">Apartamento</option>
-                <option value="comercial">Comércio / Sala Comercial</option>
-                <option value="terreno">Terreno / Lote</option>
-              </select>
+              <input type="tel" class="f-inp" id="c_whats" required placeholder="Ex: (47) 99113-4446">
             </div>
           </div>
 
-          <div class="f-group mt8" style="margin-top:16px;">
-            <label class="f-label" for="c_situacao">Sua Situação Principal</label>
-            <select class="f-inp" id="c_situacao">
-              <option value="construir">Quero Construir do Zero</option>
-              <option value="reformar">Quero Reformar meu Imóvel</option>
-              <option value="regularizar">Quero Regularizar Documentos</option>
-              <option value="empresa">Vou abrir um Comércio</option>
-              <option value="dividir">Quero dividir um Terreno</option>
-              <option value="interiores">Quero Projeto de Interiores</option>
-              <option value="nao-sei">Não sei o que preciso</option>
+          <div class="f-grid form-block">
+            <div class="f-group">
+              <label class="f-label" for="c_email">E-mail</label>
+              <input type="email" class="f-inp" id="c_email" required placeholder="Ex: ana@email.com">
+            </div>
+            <div class="f-group">
+              <label class="f-label" for="c_cidade">Cidade</label>
+              <input type="text" class="f-inp" id="c_cidade" required placeholder="Ex: Brusque">
+            </div>
+          </div>
+
+          <div class="f-group form-block">
+            <label class="f-label" for="c_tipo">Tipo do imóvel</label>
+            <select class="f-inp" id="c_tipo">
+              <option value="casa">Casa</option>
+              <option value="apartamento">Apartamento</option>
+              <option value="terreno">Terreno</option>
+              <option value="sala">Sala Comercial</option>
+              <option value="loja">Loja</option>
+              <option value="clinica">Clínica</option>
+              <option value="escritorio">Escritório</option>
+              <option value="galpao">Galpão</option>
+              <option value="condominio">Condomínio</option>
+              <option value="outro">Outro</option>
             </select>
           </div>
 
-          <div class="f-group mt8" style="margin-top:16px;">
-            <label class="f-label" for="c_desc">Descrição do Caso (Opcional)</label>
-            <textarea class="f-inp f-ta" id="c_desc" placeholder="Detalhes adicionais ou dúvidas que queira tirar..."></textarea>
-          </div>
+          <div class="form-block">
+            <span class="form-block-lbl">O que você pretende fazer?</span>
+            <div class="chk-grid" id="chk-objetivo">
+              <input type="checkbox" class="chk-input sr-only" id="obj_construir" value="construir">
+              <label class="chk-pill" for="obj_construir">Construir</label>
 
-          <div class="f-group mt8" style="margin-top:16px;margin-bottom:24px;">
-            <label class="f-label">Anexar Planta ou Foto (Opcional)</label>
-            <div style="border:1px dashed var(--border);padding:14px;text-align:center;background:var(--bg-white);">
-              <span class="tx-cap" style="font-size:11px;">Arraste arquivos aqui ou selecione no seu dispositivo</span>
+              <input type="checkbox" class="chk-input sr-only" id="obj_reformar" value="reformar">
+              <label class="chk-pill" for="obj_reformar">Reformar</label>
+
+              <input type="checkbox" class="chk-input sr-only" id="obj_regularizar" value="regularizar">
+              <label class="chk-pill" for="obj_regularizar">Regularizar</label>
+
+              <input type="checkbox" class="chk-input sr-only" id="obj_empresa" value="empresa">
+              <label class="chk-pill" for="obj_empresa">Abrir empresa</label>
+
+              <input type="checkbox" class="chk-input sr-only" id="obj_dividir" value="dividir">
+              <label class="chk-pill" for="obj_dividir">Parcelar terreno</label>
+
+              <input type="checkbox" class="chk-input sr-only" id="obj_interiores" value="interiores">
+              <label class="chk-pill" for="obj_interiores">Projeto de interiores</label>
+
+              <input type="checkbox" class="chk-input sr-only" id="obj_naosei" value="nao-sei">
+              <label class="chk-pill" for="obj_naosei">Ainda não sei</label>
             </div>
           </div>
 
-          <button type="submit" class="btn btn-ink btn-lg" style="width:100%;justify-content:center;">Enviar Proposta</button>
+          <div class="f-group form-block">
+            <label class="f-label" for="c_desc">Conte um pouco sobre sua situação</label>
+            <textarea class="f-inp f-ta" id="c_desc" placeholder="Ex.: &quot;Quero construir uma casa de aproximadamente 400 m².&quot; ou &quot;Minha casa foi ampliada e preciso regularizar.&quot;"></textarea>
+          </div>
+
+          <div class="form-block">
+            <span class="form-block-lbl">Você possui algum documento?</span>
+            <div class="upload-zone">
+              <input type="file" id="c_files" multiple accept="image/*,.pdf,.dwg">
+              <span class="tx-cap" style="font-size:13px;font-weight:600;color:var(--ink);">Arraste arquivos aqui ou clique para selecionar</span>
+              <p class="upload-hint">Pode anexar matrícula, planta, fotos, croqui, documentos ou notificações.</p>
+            </div>
+            <ul class="upload-list" id="file-list"></ul>
+          </div>
+
+          <div class="form-block">
+            <span class="form-block-lbl">Como prefere ser atendido?</span>
+            <div class="radio-grid">
+              <input type="radio" class="radio-input sr-only" id="pref_whats" name="c_pref" value="whatsapp" checked>
+              <label class="radio-pill" for="pref_whats">WhatsApp</label>
+
+              <input type="radio" class="radio-input sr-only" id="pref_call" name="c_pref" value="ligacao">
+              <label class="radio-pill" for="pref_call">Ligação</label>
+
+              <input type="radio" class="radio-input sr-only" id="pref_email" name="c_pref" value="email">
+              <label class="radio-pill" for="pref_email">E-mail</label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-ink btn-lg form-block" style="width:100%;justify-content:center;">Solicitar atendimento</button>
+          <p class="form-note">Entraremos em contato o mais breve possível para entender sua necessidade.</p>
         </form>
 
         <!-- Success Toast -->
-        <div id="form-success" style="display:none;margin-top:20px;padding:16px;background:rgba(109,201,138,.12);border:1px solid var(--mint);text-align:center;">
-          <span class="badge bs" style="margin-bottom:6px;"><span class="dot"></span>Sucesso</span>
-          <p class="tx-cap" style="color:#3A9B65;font-weight:600;">Obrigado! Sua solicitação foi enviada. Nossa equipe entrará em contato via WhatsApp nas próximas horas.</p>
+        <div id="form-success" style="display:none;margin-top:20px;padding:20px;background:rgba(109,201,138,.12);border:1px solid var(--mint);text-align:center;border-radius:12px;">
+          <span class="badge bs" style="margin-bottom:8px;"><span class="dot"></span>Recebido</span>
+          <p class="tx-cap" style="color:#3A9B65;font-weight:600;">Recebemos sua mensagem! Entraremos em contato o mais breve possível para entender sua necessidade.</p>
         </div>
       </div>
+
+      <aside class="why-card" data-aos="fade-up" data-aos-delay="220">
+        <div class="why-card-title">Por que falar com a Virtual?</div>
+        <ul>
+          <li>Você não precisa entender de engenharia.</li>
+          <li>Explicamos tudo de forma simples.</li>
+          <li>Atendimento próximo.</li>
+          <li>Soluções pensadas para sua necessidade.</li>
+          <li>Projetos desenvolvidos com responsabilidade técnica.</li>
+          <li>Orientação desde o primeiro contato.</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     5. ATENDIMENTO RÁPIDO
+     ========================================= -->
+<section class="section-home" style="background:var(--bg-white);">
+  <div class="w">
+    <div class="s-header centered">
+      <div class="s-eyebrow" data-aos="fade-up">Prefere falar direto com um especialista?</div>
+      <h2 class="s-title" data-aos="fade-up" data-aos-delay="60">Atendimento rápido</h2>
+      <p class="s-subtitle" data-aos="fade-up" data-aos-delay="120">
+        Às vezes uma conversa de poucos minutos já é suficiente para esclarecer suas dúvidas.
+      </p>
+    </div>
+
+    <div class="quick-grid" data-aos="fade-up" data-aos-delay="160">
+      <a href="https://wa.me/5547991134446?text=Ol%C3%A1!%20Gostaria%20de%20conversar%20sobre%20o%20meu%20projeto." target="_blank" class="quick-card">
+        <div class="quick-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.05 21.785h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg></div>
+        <div class="quick-title">WhatsApp</div>
+        <div class="quick-text">Clique e converse conosco.</div>
+      </a>
+      <div class="quick-card">
+        <div class="quick-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <div class="quick-title">Horário de atendimento</div>
+        <div class="quick-text">Segunda a sexta<br>08:00 às 18:00</div>
+      </div>
+      <a href="mailto:contatolucasgamba@gmail.com" class="quick-card">
+        <div class="quick-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
+        <div class="quick-title">E-mail</div>
+        <div class="quick-text">contatolucasgamba@gmail.com</div>
+      </a>
+    </div>
+
+    <div class="region-note" data-aos="fade-up" data-aos-delay="220">
+      <p>Região de atendimento — Brusque e região</p>
+      <p>
+        Atendemos presencialmente e também de forma digital. Hoje conseguimos acompanhar diversos
+        projetos utilizando reuniões online, compartilhamento de documentos e visitas técnicas
+        quando necessário. Assim você não fica preso somente à cidade.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     6. O QUE ACONTECE DEPOIS?
+     ========================================= -->
+<section class="section-home" style="background:var(--bg-alt);">
+  <div class="w">
+    <div class="s-header centered">
+      <div class="s-eyebrow" data-aos="fade-up">Reduza a ansiedade</div>
+      <h2 class="s-title" data-aos="fade-up" data-aos-delay="60">O que acontece depois?</h2>
+      <p class="s-subtitle" data-aos="fade-up" data-aos-delay="120">Após enviar sua solicitação:</p>
+    </div>
+
+    <div class="timeline steps-4" data-aos="fade-up" data-aos-delay="160">
+      <div class="timeline-item">
+        <div class="timeline-marker">1</div>
+        <div class="timeline-title">Recebemos sua mensagem</div>
+        <p class="tx-cap">Sua solicitação chega direto para nossa equipe.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">2</div>
+        <div class="timeline-title">Entendemos seu objetivo</div>
+        <p class="tx-cap">Analisamos sua situação, imóvel e documentos.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">3</div>
+        <div class="timeline-title">Indicamos o melhor caminho</div>
+        <p class="tx-cap">Explicamos quais etapas realmente fazem sentido.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">4</div>
+        <div class="timeline-title">Preparamos uma proposta</div>
+        <p class="tx-cap">Uma proposta personalizada para o seu caso.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     7. FAQ
+     ========================================= -->
+<section class="section-home" id="faq" style="background:var(--bg-white);">
+  <div class="w">
+    <div style="text-align:center;margin-bottom:56px;">
+      <div class="s-eyebrow" data-aos="fade-up">Respostas rápidas</div>
+      <h2 class="s-title" style="margin:12px auto 0;" data-aos="fade-up" data-aos-delay="60">Dúvidas rápidas</h2>
+    </div>
+
+    <div class="faq-list" data-aos="fade-up" data-aos-delay="120">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">O orçamento é gratuito?</div>
+        <div class="faq-a">Sim. A primeira conversa e a avaliação inicial da sua necessidade não têm custo nem compromisso.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Preciso saber qual projeto contratar?</div>
+        <div class="faq-a">Não. Conte sua situação e nossa equipe ajudará você a identificar o serviço mais adequado.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Vocês fazem visita ao local?</div>
+        <div class="faq-a">Sim, quando o serviço exige levantamento técnico presencial — como regularização, reforma e gerenciamento de obras.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Atendem outras cidades?</div>
+        <div class="faq-a">Sim. Além de Brusque e região, conseguimos acompanhar diversos projetos à distância, com reuniões online e visitas técnicas quando necessário.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Posso enviar fotos antes?</div>
+        <div class="faq-a">Sim. Inclusive isso agiliza bastante a análise inicial do seu caso.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     8. CTA FINAL
+     ========================================= -->
+<section class="section-home final-cta" id="cta-final">
+  <div class="w">
+    <div class="final-cta-eyebrow" data-aos="fade-up">Próximo passo</div>
+    <h2 class="final-cta-h2" data-aos="fade-up" data-aos-delay="60">
+      Vamos transformar sua<br>ideia em um projeto?
+    </h2>
+    <p class="final-cta-text" data-aos="fade-up" data-aos-delay="120">
+      Estamos prontos para indicar o melhor caminho para o seu imóvel.
+    </p>
+    <div class="final-cta-buttons" data-aos="fade-up" data-aos-delay="180">
+      <a href="#formulario" class="btn btn-mint btn-lg">Solicitar orçamento</a>
+      <a href="https://wa.me/5547991134446?text=Ol%C3%A1!%20Gostaria%20de%20conversar%20sobre%20o%20meu%20projeto." target="_blank" class="btn btn-ghost btn-lg" style="border-color:rgba(244,244,240,0.3);color:#F4F4F0!important;display:inline-flex;align-items:center;gap:10px;">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#F4F4F0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Conversar pelo WhatsApp
+      </a>
     </div>
   </div>
 </section>
@@ -152,47 +725,103 @@
 <footer class="ds-ft">
   <div class="w">
     <div class="ds-ft-grid">
+
+      <!-- Brand col -->
       <div>
-        <div class="ds-ft-brand" style="margin-bottom: 20px;">
-          <img src="LOGOTIPO/SEM FUNDO/PRINCIPAL/2.png" alt="Virtual Engenharia" style="max-height: 32px; width: auto; object-fit: contain;">
+        <div style="margin-bottom: 24px;">
+          <img src="assets/logo/sem-fundo-principal-2.png" alt="Virtual Engenharia" style="max-height: 40px; width: auto; object-fit: contain;">
         </div>
-        <p class="ds-ft-desc">Projetos de engenharia e interiores com excelência técnica e identidade visual sólida.</p>
+        <p class="ds-ft-desc">Engenharia e interiores em Brusque – SC. Construção, reforma, regularização e design de ambientes com orientação técnica do início ao fim.</p>
         <div class="ft-social">
-          <a href="#" class="ft-soc-a">in</a>
-          <a href="#" class="ft-soc-a">IG</a>
-          <a href="#" class="ft-soc-a">TW</a>
+          <a href="https://www.instagram.com/virtual.projetos?igsh=MThyOGh4NTh3czZtNQ==" target="_blank" rel="noopener" class="ft-soc-a" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <a href="https://linkedin.com/company/virtualengenharia" target="_blank" rel="noopener" class="ft-soc-a" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <a href="https://wa.me/5547991134446" target="_blank" rel="noopener" class="ft-soc-a" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+          </a>
+          <a href="https://facebook.com/virtualengenharia" target="_blank" rel="noopener" class="ft-soc-a" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </a>
         </div>
       </div>
+
+      <!-- Serviços col -->
       <div>
         <div class="ft-h">Serviços</div>
         <div class="ft-links">
-          <a href="construcao-reforma.html">Construção &amp; Reforma</a>
-          <a href="regularizacao.html">Regularização de Imóveis</a>
-          <a href="servicos.html">Projetos de Interiores</a>
-          <a href="servicos.html">Projetos Complementares</a>
+          <a href="servicos.html#svc-arquitetonico">Projeto Arquitetônico</a>
+          <a href="servicos.html#svc-eletrico">Projeto Elétrico</a>
+          <a href="servicos.html#svc-hidrossanitario">Projeto Hidrossanitário</a>
+          <a href="servicos.html#svc-preventivo">Preventivo Contra Incêndio</a>
+          <a href="servicos.html#svc-regularizacao">Regularização de Imóveis</a>
+          <a href="servicos.html#svc-gerenciamento">Gerenciamento de Obras</a>
+          <a href="servicos.html#svc-parcelamento">Parcelamento de Solo</a>
+          <a href="servicos.html#svc-interiores">Interiores</a>
         </div>
       </div>
+
+      <!-- Navegação col -->
       <div>
-        <div class="ft-h">Mapa do Site</div>
+        <div class="ft-h">Navegação</div>
         <div class="ft-links">
           <a href="index.html">Início</a>
           <a href="servicos.html">Serviços</a>
-          <a href="nao-sei.html">Não sei o que preciso</a>
+          <a href="nao-sei-por-onde-comecar.html">Não Sei Por Onde Começar</a>
           <a href="projetos.html">Projetos Realizados</a>
-          <a href="sobre.html">Sobre Nós</a>
+          <a href="sobre.html">Sobre a Virtual</a>
+          <a href="contato.html">Contato</a>
         </div>
       </div>
+
+      <!-- Contato col -->
       <div>
-        <div class="ft-h">Contato</div>
+        <div class="ft-h">Fale Conosco</div>
         <div class="ft-links">
-          <a href="mailto:contato@virtual.com.br">contato@virtual.com.br</a>
-          <a href="tel:+551199999999">(11) 99999-9999</a>
+          <a href="https://wa.me/5547991134446" target="_blank" rel="noopener">
+            <span style="display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(244,244,240,0.55)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </span>
+          </a>
+          <a href="tel:+5547991134446">
+            <span style="display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(244,244,240,0.65)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              (47) 99113-4446
+            </span>
+          </a>
+          <a href="mailto:contatolucasgamba@gmail.com">
+            <span style="display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(244,244,240,0.55)" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              contatolucasgamba@gmail.com
+            </span>
+          </a>
+          <a href="contato.html">Solicitar Orçamento</a>
+        </div>
+
+        <div style="margin-top: 32px; padding: 20px; background: rgba(32,133,168,0.08); border: 1px solid rgba(32,133,168,0.2); border-radius: 12px;">
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--mint); margin-bottom: 8px;">Atendimento</div>
+          <div style="font-size: 13px; color: rgba(244,244,240,0.6); line-height: 1.6;">
+            Seg–Sex, 9h às 18h<br>
+            Resposta em até 24h
+          </div>
         </div>
       </div>
+
     </div>
     <div class="ds-ft-bottom">
       <span class="ds-ft-copy">© 2025 Virtual Engenharia — Todos os Direitos Reservados</span>
-      <span class="ds-ft-copy">Cream Mode · #ECEDE6</span>
+      <a href="https://intensedigital.com.br" target="_blank" rel="noopener" class="ds-ft-copy">Desenvolvido por Intense Digital</a>
     </div>
   </div>
   <div class="ds-ft-wordmark">Virtual</div>
@@ -256,39 +885,70 @@
     }, { threshold: 0.25 });
     document.querySelectorAll('.tr-wrap').forEach(el => trObs.observe(el));
   });
-  
-function handleFormSubmit(e) {
-  e.preventDefault();
-  
-  const nome = document.getElementById('c_nome');
-  const whats = document.getElementById('c_whats');
-  const cidade = document.getElementById('c_cidade');
-  
-  if (nome.value.trim() === '' || whats.value.trim() === '' || cidade.value.trim() === '') {
-    alert('Por favor, preencha todos os campos obrigatórios.');
-    return;
-  }
-  
-  document.getElementById('budget-form').style.display = 'none';
-  document.getElementById('form-success').style.display = 'block';
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-  const params = new URLSearchParams(window.location.search);
-  const svc = params.get('servico');
-  if (svc) {
-    const sel = document.getElementById('c_situacao');
-    if (sel) {
-      for(let i=0; i<sel.options.length; i++) {
-        if (sel.options[i].value === svc) {
-          sel.selectedIndex = i;
-          break;
-        }
-      }
+  // FAQ ACCORDION
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isActive = item.classList.contains('active');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+    if (!isActive) item.classList.add('active');
+  }
+
+  // UPLOAD — lista de arquivos selecionados (front-end apenas, sem envio real)
+  const fileInput = document.getElementById('c_files');
+  const fileList = document.getElementById('file-list');
+  fileInput.addEventListener('change', () => {
+    fileList.innerHTML = '';
+    Array.from(fileInput.files).forEach(f => {
+      const li = document.createElement('li');
+      li.textContent = f.name;
+      fileList.appendChild(li);
+    });
+  });
+
+  // CARDS "Como podemos ajudar?" — rolam até o formulário e marcam o objetivo
+  document.querySelectorAll('[data-quiz-obj]').forEach(card => {
+    card.addEventListener('click', () => {
+      const val = card.dataset.quizObj;
+      const chk = document.getElementById('obj_' + (val === 'nao-sei' ? 'naosei' : val));
+      if (chk) chk.checked = true;
+      document.getElementById('formulario').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // FORM SUBMIT (mock — sem backend, mesmo padrão do restante do site)
+  function handleFormSubmit(e) {
+    e.preventDefault();
+
+    const nome = document.getElementById('c_nome');
+    const whats = document.getElementById('c_whats');
+    const email = document.getElementById('c_email');
+    const cidade = document.getElementById('c_cidade');
+
+    if (nome.value.trim() === '' || whats.value.trim() === '' || cidade.value.trim() === '') {
+      alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
     }
-  }
-});
+    if (email.value.trim() === '' || !email.value.includes('@')) {
+      alert('Por favor, informe um e-mail válido.');
+      return;
+    }
 
+    document.getElementById('budget-form').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+    fileList.innerHTML = '';
+  }
+
+  // DEEP-LINK ?servico= — marca o objetivo correspondente (mantido por compatibilidade com links antigos)
+  document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const svc = params.get('servico');
+    if (svc) {
+      const id = 'obj_' + (svc === 'nao-sei' ? 'naosei' : svc);
+      const chk = document.getElementById(id);
+      if (chk) chk.checked = true;
+    }
+  });
 </script>
 </body>
 </html>

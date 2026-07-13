@@ -11,3 +11,10 @@
 
 # Logs
 *.log
+.vercel
+.env*
+
+# Raw uploads that may contain unredacted personal data (CPF, names, addresses)
+# — never let these land in a commit before manual review.
+**/Captura de Tela*
+**/WhatsApp Image*

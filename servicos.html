@@ -3,20 +3,447 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nossos Serviços — Virtual Engenharia</title>
-  <meta name="description" content="Serviços técnicos de arquitetura, complementares, preventivos e regularizações.">
+  <title>Serviços para Cada Etapa do Seu Imóvel — Virtual Engenharia</title>
+  <meta name="description" content="Projeto arquitetônico, elétrico, hidrossanitário, preventivo contra incêndio, regularização, gerenciamento de obras, parcelamento de solo e interiores. Encontre o serviço ideal para a sua necessidade.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
-  
+  <link rel="icon" type="image/png" href="assets/logo/simbolo-favicon.png">
+  <style>
+    /* ====== PAGE-SPECIFIC STYLES — Serviços ====== */
+
+    /* Shared section header (copied from index.html / nao-sei-por-onde-comecar.html) */
+    .section-home { padding: 120px 0; position: relative; }
+    .s-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .s-title {
+      font-family: var(--fd);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 16px;
+      letter-spacing: -.01em;
+    }
+    .s-subtitle {
+      font-size: 17px;
+      color: var(--ink-mid);
+      line-height: 1.75;
+      max-width: 560px;
+    }
+    .s-header { margin-bottom: 0; }
+    .s-header.centered { text-align: center; }
+    .s-header.centered .s-subtitle { margin: 0 auto; }
+
+    /* Hero */
+    .svc-hero {
+      padding: 200px 0 110px;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(32,133,168,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(32,133,168,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .svc-hero-cta {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    /* Category navigation cards (copied .sit-* pattern, whole card is a link) */
+    .sit-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .sit-card {
+      display: block;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 28px;
+      cursor: pointer;
+      transition: all 0.3s var(--ease);
+      position: relative;
+      overflow: hidden;
+    }
+    .sit-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--g-brand-h);
+      transform: scaleX(0);
+      transition: transform 0.3s var(--ease);
+      transform-origin: left;
+    }
+    .sit-card:hover {
+      border-color: rgba(32,133,168,0.25);
+      box-shadow: var(--sh2);
+      transform: translateY(-4px);
+    }
+    .sit-card:hover::after { transform: scaleX(1); }
+    .sit-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(32,133,168,0.08);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      color: var(--teal);
+    }
+    .sit-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+    .sit-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+    .sit-desc {
+      font-size: 15px;
+      color: var(--ink-mid);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .sit-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: gap 0.2s;
+    }
+    .sit-card:hover .sit-link { gap: 10px; }
+    .sit-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: rgba(32,133,168,0.08);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    /* ====== SERVICE BLOCK — reusable component ====== */
+    .svc-section {
+      padding: 88px 0;
+      scroll-margin-top: 110px;
+    }
+    .svc-block {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .svc-block.rev .svc-content { order: 2; }
+    .svc-block.rev .svc-img { order: 1; }
+    .svc-kicker {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+    .svc-kicker::after {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--teal);
+      opacity: .4;
+    }
+    .svc-title {
+      font-family: var(--fd);
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -.01em;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .svc-what {
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--ink-mid);
+      margin-bottom: 28px;
+      max-width: 560px;
+    }
+    .svc-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-bottom: 28px;
+    }
+    .svc-sub {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .svc-check li, .svc-deliv li {
+      font-size: 14px;
+      color: var(--ink-mid);
+      line-height: 1.6;
+      padding: 5px 0;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .svc-check li::before {
+      content: '✓';
+      color: var(--teal);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .svc-deliv li::before {
+      content: '—';
+      color: var(--mint-2);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .svc-cta {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    .svc-img {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--sh);
+      aspect-ratio: 4/3;
+      background: var(--bg-alt);
+    }
+    .svc-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(15%);
+      transition: transform .7s var(--ease), filter .5s;
+    }
+    .svc-block:hover .svc-img img {
+      transform: scale(1.04);
+      filter: grayscale(0);
+    }
+    /* Special: "Muito comum para" chips (Preventivo) */
+    .svc-chips {
+      margin: -8px 0 28px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .svc-chips-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-right: 4px;
+    }
+    /* Special: alert checklist opener (Regularização) */
+    .svc-alert {
+      background: rgba(32,133,168,0.05);
+      border: 1px solid rgba(32,133,168,0.15);
+      border-left: 3px solid var(--teal);
+      border-radius: 0 12px 12px 0;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    .svc-alert-t {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .svc-alert ul {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px 18px;
+    }
+
+    /* Comparison table */
+    .cmp-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--bg-white);
+      margin-top: 48px;
+    }
+    .cmp-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 560px;
+    }
+    .cmp-table th {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--teal);
+      text-align: left;
+      padding: 18px 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cmp-table td {
+      padding: 16px 28px;
+      border-bottom: 1px solid var(--border-s);
+      font-size: 15px;
+      vertical-align: middle;
+    }
+    .cmp-table tbody tr:last-child td { border-bottom: none; }
+    .cmp-table tbody tr { transition: background .25s var(--ease); }
+    .cmp-table tbody tr:hover { background: var(--bg); }
+    .cmp-want { font-weight: 700; color: var(--ink); }
+    .cmp-pill {
+      display: inline-flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: rgba(32,133,168,0.08);
+      border: 1px solid transparent;
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin: 2px 6px 2px 0;
+      transition: all .25s var(--ease);
+    }
+    .cmp-pill:hover {
+      border-color: rgba(32,133,168,0.35);
+      background: rgba(32,133,168,0.14);
+      transform: translateY(-1px);
+    }
+
+    /* Combos (cross-sell) */
+    .combo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 48px;
+    }
+    .combo-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 24px;
+      transition: all .3s var(--ease);
+    }
+    .combo-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--sh2);
+      border-color: rgba(32,133,168,0.2);
+    }
+    .combo-t {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .combo-card li {
+      font-size: 14px;
+      color: var(--ink-mid);
+      padding: 5px 0;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .combo-card li::before {
+      content: '✔';
+      color: var(--teal);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Final CTA (copied from index.html) */
+    .final-cta {
+      background: var(--bg-dark);
+      text-align: center;
+    }
+    .final-cta-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: 24px;
+    }
+    .final-cta-h2 {
+      font-family: var(--fd);
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.05;
+      color: #F4F4F0;
+      margin-bottom: 20px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .final-cta-text {
+      font-size: 15px;
+      color: rgba(244,244,240,0.6);
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 0 auto 48px;
+    }
+    .final-cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .sit-grid { grid-template-columns: repeat(2, 1fr); }
+      .svc-block { grid-template-columns: 1fr; gap: 28px; }
+      .svc-img { order: -1 !important; aspect-ratio: 16/9; }
+      .combo-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .svc-cols { grid-template-columns: 1fr; }
+      .svc-alert ul { grid-template-columns: 1fr; }
+      .cmp-table th, .cmp-table td { padding: 14px 18px; }
+    }
+    @media (max-width: 640px) {
+      .section-home { padding: 80px 0; }
+      .svc-section { padding: 64px 0; }
+      .sit-grid { grid-template-columns: 1fr; }
+      .combo-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
 <!-- PRELOADER -->
 <div class="preloader" id="preloader">
   <div class="pre-logo">
-    <img src="LOGOTIPO/SEM FUNDO/PRINCIPAL/1.png" alt="Virtual Engenharia" style="max-height: 52px; width: auto; object-fit: contain;">
+    <img src="assets/logo/sem-fundo-principal-1.png" alt="Virtual Engenharia" style="max-height: 52px; width: auto; object-fit: contain;">
   </div>
   <div class="pre-bar-wrap"><div class="pre-bar" id="pre-bar"></div></div>
 </div>
@@ -35,10 +462,10 @@
       <nav class="h-nav-l">
         <a href="index.html" class="">Início</a>
         <a href="servicos.html" class="active">Serviços</a>
-        <a href="nao-sei.html" class="">Não Sei</a>
+        <a href="nao-sei-por-onde-comecar.html" class="">Não Sei Por Onde Começar</a>
       </nav>
       <a href="index.html" class="h-logo">
-        <img src="LOGOTIPO/SEM FUNDO/PRINCIPAL/1.png" alt="Virtual Engenharia" style="max-height: 32px; width: auto; object-fit: contain;">
+        <img src="assets/logo/sem-fundo-principal-1.png" alt="Virtual Engenharia" style="max-height: 32px; width: auto; object-fit: contain;">
       </a>
       <nav class="h-nav-r">
         <a href="projetos.html" class="">Projetos</a>
@@ -51,74 +478,690 @@
 </header>
 
 
-<section class="section" style="padding-top:180px;">
+<!-- =========================================
+     1. HERO
+     ========================================= -->
+<section class="svc-hero">
   <div class="w">
     <div class="s-num" data-aos="fade-up">Serviços</div>
-    <h1 class="s-h" data-aos="fade-up" data-aos-delay="80">Nossas frentes<br>de <span class="accent">atuação</span></h1>
-    
-    <div class="c-row" data-aos="fade-up" data-aos-delay="160">
-      <div class="card">
-        <div class="c-icon-sq"><span style="font-size:18px;font-weight:700;">01</span></div>
-        <div class="tx-xs mb4">Projeto Arquitetônico</div>
-        <p class="tx-cap" style="margin-bottom:14px;"><strong>O que é:</strong> O desenho técnico que define a forma, fluxo e estética da edificação.</p>
-        <p class="tx-cap" style="margin-bottom:18px;"><strong>Quando você precisa:</strong> Ao construir do zero, fazer ampliações ou grandes reformas estruturais.</p>
-        <a href="contato.html?servico=construir" class="btn btn-sm btn-ink">Orçamento</a>
-      </div>
-      <div class="card">
-        <div class="c-icon-sq"><span style="font-size:18px;font-weight:700;">02</span></div>
-        <div class="tx-xs mb4">Projeto Hidrossanitário</div>
-        <p class="tx-cap" style="margin-bottom:14px;"><strong>O que é:</strong> Detalhamento de água fria/quente, esgoto, águas pluviais e drenagem.</p>
-        <p class="tx-cap" style="margin-bottom:18px;"><strong>Quando você precisa:</strong> Para evitar vazamentos, falta de pressão ou infiltrações na sua obra.</p>
-        <a href="contato.html?servico=construir" class="btn btn-sm btn-ink">Orçamento</a>
-      </div>
-      <div class="card">
-        <div class="c-icon-sq"><span style="font-size:18px;font-weight:700;">03</span></div>
-        <div class="tx-xs mb4">Projeto Elétrico</div>
-        <p class="tx-cap" style="margin-bottom:14px;"><strong>O que é:</strong> Dimensionamento de circuitos, tomadas, iluminação e quadro de cargas.</p>
-        <p class="tx-cap" style="margin-bottom:18px;"><strong>Quando você precisa:</strong> Para garantir segurança contra curtos-circuitos e economia de energia.</p>
-        <a href="contato.html?servico=construir" class="btn btn-sm btn-ink">Orçamento</a>
-      </div>
+    <h1 class="s-h" style="margin-bottom:32px;" data-aos="fade-up" data-aos-delay="80">
+      Serviços para cada<br>etapa do seu <span class="accent">imóvel</span>
+    </h1>
+    <p class="tx-blg" style="max-width:640px;margin-bottom:44px;" data-aos="fade-up" data-aos-delay="120">
+      Cada projeto tem um objetivo diferente. Seja para construir, reformar, regularizar ou transformar
+      um ambiente, a Virtual identifica a melhor solução para o seu caso e acompanha você durante todo o processo.
+    </p>
+    <div class="svc-hero-cta" data-aos="fade-up" data-aos-delay="180">
+      <a href="contato.html" class="btn btn-ink btn-lg">Solicitar orçamento</a>
+      <a href="#encontrar" class="btn btn-outline btn-lg">Encontrar o serviço ideal</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     2. ANTES DE ESCOLHER UM SERVIÇO
+     ========================================= -->
+<section class="section-home" style="background:var(--bg-white);text-align:center;">
+  <div class="w">
+    <div style="max-width:720px;margin:0 auto;">
+      <div class="s-eyebrow" data-aos="fade-up">Antes de escolher um serviço…</div>
+      <div class="tr-wrap"><div class="tr-content">
+        <h2 class="tx-md" style="margin-bottom:24px;">Você sabe o que<br><span class="g-txt">realmente precisa?</span></h2>
+      </div></div>
+      <p class="tx-blg" style="margin-bottom:16px;" data-aos="fade-up" data-aos-delay="120">
+        Muitas pessoas chegam até nós procurando um projeto específico, mas durante a análise descobrem
+        que o caminho mais adequado é outro. Nossa função é entender seu objetivo antes de indicar qualquer serviço.
+      </p>
+      <p class="tx-blg" style="margin-bottom:32px;" data-aos="fade-up" data-aos-delay="160">
+        Não se preocupe em conhecer os termos técnicos. Conte sua necessidade e nós mostramos o caminho.
+      </p>
+      <a href="nao-sei-por-onde-comecar.html" class="sit-link" style="justify-content:center;" data-aos="fade-up" data-aos-delay="200">Prefere que a gente descubra com você? →</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     3. ENCONTRE O SERVIÇO IDEAL (navegação por categorias)
+     ========================================= -->
+<section class="section-home" id="encontrar" style="background:var(--bg-alt);">
+  <div class="w">
+    <div class="s-header centered">
+      <div class="s-eyebrow" data-aos="fade-up">Navegue pela sua necessidade</div>
+      <h2 class="s-title" data-aos="fade-up" data-aos-delay="60">Encontre o serviço ideal</h2>
+      <p class="s-subtitle" data-aos="fade-up" data-aos-delay="120">
+        Escolha o que você quer fazer — levamos você direto ao serviço certo.
+      </p>
     </div>
 
-    <div class="c-row mt8" style="margin-top:20px;" data-aos="fade-up" data-aos-delay="200">
-      <div class="card">
-        <div class="c-icon-sq"><span style="font-size:18px;font-weight:700;">04</span></div>
-        <div class="tx-xs mb4">Contra Incêndio (AVCB)</div>
-        <p class="tx-cap" style="margin-bottom:14px;"><strong>O que é:</strong> Projeto de sinalização, extintores, hidrantes e saídas de emergência.</p>
-        <p class="tx-cap" style="margin-bottom:18px;"><strong>Quando você precisa:</strong> Obrigatório para comércios e indústrias obterem ou renovarem o AVCB.</p>
-        <a href="contato.html?servico=comercio" class="btn btn-sm btn-ink">Orçamento</a>
+    <div class="sit-grid">
+      <a href="#svc-arquitetonico" class="sit-card" data-aos="fade-up" data-aos-delay="60">
+        <div class="sit-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="10" width="20" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/><line x1="12" y1="14" x2="12" y2="17"/></svg>
+        </div>
+        <div class="sit-title">Construção</div>
+        <div class="sit-desc">Vou construir do zero e preciso de projetos e aprovações.</div>
+        <span class="sit-link">Ver serviço →</span>
+      </a>
+      <a href="#svc-arquitetonico" class="sit-card" data-aos="fade-up" data-aos-delay="120">
+        <div class="sit-icon">
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <div class="sit-title">Reforma</div>
+        <div class="sit-desc">Vou ampliar, modernizar ou modificar um imóvel existente.</div>
+        <span class="sit-link">Ver serviço →</span>
+      </a>
+      <a href="#svc-regularizacao" class="sit-card" data-aos="fade-up" data-aos-delay="180">
+        <div class="sit-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
+        </div>
+        <div class="sit-title">Regularização</div>
+        <div class="sit-desc">Preciso deixar a documentação do imóvel em dia.</div>
+        <span class="sit-link">Ver serviço →</span>
+      </a>
+      <a href="#svc-preventivo" class="sit-card" data-aos="fade-up" data-aos-delay="60">
+        <div class="sit-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="sit-title">Empresas</div>
+        <div class="sit-desc">Vou abrir ou adequar uma clínica, loja, restaurante ou escritório.</div>
+        <span class="sit-link">Ver serviço →</span>
+      </a>
+      <a href="#svc-parcelamento" class="sit-card" data-aos="fade-up" data-aos-delay="120">
+        <div class="sit-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/></svg>
+        </div>
+        <div class="sit-title">Terrenos</div>
+        <div class="sit-desc">Quero dividir, desmembrar, lotear ou regularizar uma área.</div>
+        <span class="sit-link">Ver serviço →</span>
+      </a>
+      <a href="#svc-interiores" class="sit-card" data-aos="fade-up" data-aos-delay="180">
+        <div class="sit-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </div>
+        <div class="sit-title">Interiores</div>
+        <div class="sit-desc">Quero deixar meus ambientes mais bonitos e funcionais.</div>
+        <span class="sit-link">Ver serviço →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     4. BLOCOS DE SERVIÇO
+     ========================================= -->
+
+<!-- 01 · Projeto Arquitetônico -->
+<section class="svc-section" id="svc-arquitetonico">
+  <div class="w">
+    <div class="svc-block">
+      <div class="svc-content" data-aos="fade-right">
+        <div class="svc-kicker">01 · Projeto</div>
+        <h2 class="svc-title">Projeto Arquitetônico</h2>
+        <p class="svc-what"><strong>O que é?</strong> É o projeto que transforma sua ideia em um planejamento
+          técnico para construir ou reformar um imóvel: define o aproveitamento do terreno, as dimensões,
+          a forma, o fluxo e a estética da edificação.</p>
+        <div class="svc-cols">
+          <div>
+            <div class="svc-sub">Quando você precisa</div>
+            <ul class="svc-check">
+              <li>Vai construir</li>
+              <li>Vai ampliar</li>
+              <li>Vai reformar</li>
+              <li>Vai aprovar um projeto</li>
+              <li>Quer organizar melhor os espaços</li>
+            </ul>
+          </div>
+          <div>
+            <div class="svc-sub">O que entregamos</div>
+            <ul class="svc-deliv">
+              <li>Planta baixa</li>
+              <li>Fachadas</li>
+              <li>Cortes</li>
+              <li>Implantação</li>
+              <li>Memorial descritivo</li>
+              <li>Projeto para aprovação (quando necessário)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="svc-cta">
+          <a href="https://wa.me/5547991134446?text=Olá!%20Quero%20conversar%20sobre%20um%20Projeto%20Arquitetônico." target="_blank" class="btn btn-ink">Quero conversar sobre meu projeto</a>
+        </div>
       </div>
-      <div class="card">
-        <div class="c-icon-sq"><span style="font-size:18px;font-weight:700;">05</span></div>
-        <div class="tx-xs mb4">Regularização de Imóveis</div>
-        <p class="tx-cap" style="margin-bottom:14px;"><strong>O que é:</strong> Processo técnico-legal para obter Habite-se e matrícula atualizada do imóvel.</p>
-        <p class="tx-cap" style="margin-bottom:18px;"><strong>Quando você precisa:</strong> Em imóveis com construções sem projeto, ampliações ou para venda/financiamento.</p>
-        <a href="regularizacao.html" class="btn btn-sm btn-ink">Saiba Mais</a>
-      </div>
-      <div class="card">
-        <div class="c-icon-sq"><span style="font-size:18px;font-weight:700;">06</span></div>
-        <div class="tx-xs mb4">Gerenciamento de Obras</div>
-        <p class="tx-cap" style="margin-bottom:14px;"><strong>O que é:</strong> Planejamento, cronograma técnico, controle de custos e acompanhamento físico.</p>
-        <p class="tx-cap" style="margin-bottom:18px;"><strong>Quando você precisa:</strong> Para quem deseja construir ou reformar sem dor de cabeça com prazos e desperdícios.</p>
-        <a href="contato.html?servico=construir" class="btn btn-sm btn-ink">Orçamento</a>
+      <div class="svc-img" data-aos="fade-left">
+        <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=900&q=80" alt="Engenheiro desenhando sobre uma planta baixa" loading="lazy">
       </div>
     </div>
+  </div>
+</section>
 
-    <div class="c-row mt8" style="margin-top:20px; grid-template-columns: 1fr 1fr; max-width:920px;" data-aos="fade-up" data-aos-delay="240">
-      <div class="card">
-        <div class="c-icon-sq"><span style="font-size:18px;font-weight:700;">07</span></div>
-        <div class="tx-xs mb4">Parcelamento de Solo</div>
-        <p class="tx-cap" style="margin-bottom:14px;"><strong>O que é:</strong> Divisão de áreas, desmembramentos, remembramentos e loteamentos.</p>
-        <p class="tx-cap" style="margin-bottom:18px;"><strong>Quando você precisa:</strong> Para dividir terrenos de forma legal e regular perante o Cartório de Registro.</p>
-        <a href="contato.html?servico=terreno" class="btn btn-sm btn-ink">Orçamento</a>
+<!-- 02 · Projeto Elétrico -->
+<section class="svc-section" id="svc-eletrico" style="background:var(--bg-white);">
+  <div class="w">
+    <div class="svc-block rev">
+      <div class="svc-content" data-aos="fade-left">
+        <div class="svc-kicker">02 · Projeto</div>
+        <h2 class="svc-title">Projeto Elétrico</h2>
+        <p class="svc-what"><strong>O que é?</strong> Planejamento completo da instalação elétrica do imóvel,
+          para garantir segurança contra curtos-circuitos, evitar improvisos e trazer economia de energia.</p>
+        <div class="svc-cols">
+          <div>
+            <div class="svc-sub">Quando você precisa</div>
+            <ul class="svc-check">
+              <li>Casa nova</li>
+              <li>Reforma</li>
+              <li>Comércio</li>
+              <li>Ampliação</li>
+              <li>Instalação de equipamentos</li>
+              <li>Ar-condicionado</li>
+            </ul>
+          </div>
+          <div>
+            <div class="svc-sub">O que entregamos</div>
+            <ul class="svc-deliv">
+              <li>Pontos de tomadas</li>
+              <li>Iluminação</li>
+              <li>Quadro elétrico</li>
+              <li>Disjuntores</li>
+              <li>Circuitos</li>
+              <li>Dimensionamento de cargas</li>
+            </ul>
+          </div>
+        </div>
+        <div class="svc-cta">
+          <a href="https://wa.me/5547991134446?text=Olá!%20Quero%20conversar%20sobre%20um%20Projeto%20Elétrico." target="_blank" class="btn btn-ink">Quero conversar sobre meu projeto</a>
+        </div>
       </div>
-      <div class="card">
-        <div class="c-icon-sq"><span style="font-size:18px;font-weight:700;">08</span></div>
-        <div class="tx-xs mb4">Design de Interiores</div>
-        <p class="tx-cap" style="margin-bottom:14px;"><strong>O que é:</strong> Modelagem estética 3D, escolha de materiais, detalhamento de marcenaria e iluminação.</p>
-        <p class="tx-cap" style="margin-bottom:18px;"><strong>Quando você precisa:</strong> Para melhorar a funcionalidade e o conforto dos ambientes da sua casa ou comércio.</p>
-        <a href="contato.html?servico=interiores" class="btn btn-sm btn-ink">Orçamento</a>
+      <div class="svc-img" data-aos="fade-right">
+        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=900&q=80" alt="Eletricista de capacete trabalhando em painel elétrico" loading="lazy">
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · Projeto Hidrossanitário -->
+<section class="svc-section" id="svc-hidrossanitario">
+  <div class="w">
+    <div class="svc-block">
+      <div class="svc-content" data-aos="fade-right">
+        <div class="svc-kicker">03 · Projeto</div>
+        <h2 class="svc-title">Projeto Hidrossanitário</h2>
+        <p class="svc-what"><strong>O que é?</strong> Detalhamento das instalações de água fria e quente,
+          esgoto, águas pluviais e drenagem — para evitar vazamentos, falta de pressão e infiltrações
+          na sua obra ou reforma.</p>
+        <div class="svc-cols">
+          <div>
+            <div class="svc-sub">Quando você precisa</div>
+            <ul class="svc-check">
+              <li>Construção nova</li>
+              <li>Reforma com banheiro ou cozinha</li>
+              <li>Ampliação</li>
+              <li>Problemas de pressão ou vazamento</li>
+              <li>Aprovação junto à concessionária</li>
+            </ul>
+          </div>
+          <div>
+            <div class="svc-sub">O que entregamos</div>
+            <ul class="svc-deliv">
+              <li>Rede de água fria e quente</li>
+              <li>Esgoto sanitário</li>
+              <li>Águas pluviais</li>
+              <li>Drenagem</li>
+              <li>Detalhamento e dimensionamento</li>
+            </ul>
+          </div>
+        </div>
+        <div class="svc-cta">
+          <a href="https://wa.me/5547991134446?text=Olá!%20Quero%20conversar%20sobre%20um%20Projeto%20Hidrossanitário." target="_blank" class="btn btn-ink">Quero conversar sobre meu projeto</a>
+        </div>
+      </div>
+      <div class="svc-img" data-aos="fade-left">
+        <img src="https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=900&q=80" alt="Instalação hidráulica com metais cromados" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · Preventivo Contra Incêndio -->
+<section class="svc-section" id="svc-preventivo" style="background:var(--bg-white);">
+  <div class="w">
+    <div class="svc-block rev">
+      <div class="svc-content" data-aos="fade-left">
+        <div class="svc-kicker">04 · Projeto</div>
+        <h2 class="svc-title">Preventivo Contra Incêndio</h2>
+        <p class="svc-what"><strong>O que é?</strong> Projeto de segurança contra incêndio — sinalização,
+          extintores, hidrantes, iluminação de emergência e saídas — obrigatório para a maioria dos
+          imóveis comerciais obterem ou renovarem o alvará dos bombeiros (AVCB/CLCB).</p>
+        <div class="svc-chips">
+          <span class="svc-chips-lbl">Muito comum para</span>
+          <span class="sit-tag">Clínicas</span>
+          <span class="sit-tag">Restaurantes</span>
+          <span class="sit-tag">Lojas</span>
+          <span class="sit-tag">Escritórios</span>
+          <span class="sit-tag">Academias</span>
+          <span class="sit-tag">Condomínios</span>
+          <span class="sit-tag">Galpões</span>
+        </div>
+        <div class="svc-cols">
+          <div>
+            <div class="svc-sub">Quando você precisa</div>
+            <ul class="svc-check">
+              <li>Abrir uma empresa</li>
+              <li>Renovar o alvará</li>
+              <li>Mudar de ponto comercial</li>
+              <li>Ampliar ou reformar o espaço</li>
+              <li>Recebeu exigência dos bombeiros</li>
+            </ul>
+          </div>
+          <div>
+            <div class="svc-sub">O que entregamos</div>
+            <ul class="svc-deliv">
+              <li>Projeto preventivo completo</li>
+              <li>Sinalização e rotas de fuga</li>
+              <li>Extintores e hidrantes</li>
+              <li>Iluminação de emergência</li>
+              <li>Acompanhamento da vistoria</li>
+            </ul>
+          </div>
+        </div>
+        <div class="svc-cta">
+          <a href="https://wa.me/5547991134446?text=Olá!%20Quero%20conversar%20sobre%20um%20Projeto%20Preventivo%20Contra%20Incêndio." target="_blank" class="btn btn-ink">Quero conversar sobre meu projeto</a>
+        </div>
+      </div>
+      <div class="svc-img" data-aos="fade-right">
+        <img src="https://images.unsplash.com/photo-1569436078135-61753b84e3e8?w=900&q=80" alt="Extintor de incêndio em parede sinalizada" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · Regularização de Imóveis -->
+<section class="svc-section" id="svc-regularizacao">
+  <div class="w">
+    <div class="svc-block">
+      <div class="svc-content" data-aos="fade-right">
+        <div class="svc-kicker">05 · Documentação</div>
+        <h2 class="svc-title">Regularização de Imóveis</h2>
+        <div class="svc-alert">
+          <div class="svc-alert-t">Seu imóvel pode precisar de regularização se…</div>
+          <ul class="svc-check">
+            <li>Foi ampliado</li>
+            <li>Foi construído sem projeto</li>
+            <li>A metragem não bate</li>
+            <li>Precisa vender</li>
+            <li>Precisa financiar</li>
+            <li>Recebeu notificação</li>
+          </ul>
+        </div>
+        <p class="svc-what"><strong>O que é?</strong> Processo técnico-legal que atualiza a documentação
+          do imóvel junto à prefeitura e ao cartório — do levantamento da construção existente até
+          o Habite-se e a averbação na matrícula.</p>
+        <div class="svc-cols" style="grid-template-columns:1fr;">
+          <div>
+            <div class="svc-sub">O que entregamos</div>
+            <ul class="svc-deliv">
+              <li>Levantamento técnico as-built</li>
+              <li>Projeto de regularização</li>
+              <li>Aprovação na prefeitura</li>
+              <li>Habite-se</li>
+              <li>Averbação em cartório</li>
+            </ul>
+          </div>
+        </div>
+        <div class="svc-cta">
+          <a href="https://wa.me/5547991134446?text=Olá!%20Quero%20conversar%20sobre%20a%20regularização%20de%20um%20imóvel." target="_blank" class="btn btn-ink">Quero conversar sobre meu caso</a>
+        </div>
+      </div>
+      <div class="svc-img" data-aos="fade-left">
+        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=900&q=80" alt="Pessoa assinando documentos de imóvel" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · Gerenciamento de Obras -->
+<section class="svc-section" id="svc-gerenciamento" style="background:var(--bg-white);">
+  <div class="w">
+    <div class="svc-block rev">
+      <div class="svc-content" data-aos="fade-left">
+        <div class="svc-kicker">06 · Acompanhamento</div>
+        <h2 class="svc-title">Gerenciamento de Obras</h2>
+        <p class="svc-what"><strong>O que é?</strong> A Virtual acompanha sua obra do início ao fim:
+          planejamento, cronograma técnico, controle de custos e acompanhamento físico — para você
+          construir ou reformar sem dor de cabeça com prazos e desperdícios.</p>
+        <div class="svc-cols">
+          <div>
+            <div class="svc-sub">Quando você precisa</div>
+            <ul class="svc-check">
+              <li>Vai construir e não pode acompanhar de perto</li>
+              <li>Quer previsibilidade de custos e prazos</li>
+              <li>Precisa coordenar vários fornecedores</li>
+              <li>Quer garantir que a obra siga o projeto</li>
+            </ul>
+          </div>
+          <div>
+            <div class="svc-sub">O que entregamos</div>
+            <ul class="svc-deliv">
+              <li>Planejamento e cronograma</li>
+              <li>Controle de custos</li>
+              <li>Visitas técnicas periódicas</li>
+              <li>Relatórios de andamento</li>
+              <li>Responsabilidade técnica (ART/RRT)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="svc-cta">
+          <a href="https://wa.me/5547991134446?text=Olá!%20Quero%20conversar%20sobre%20o%20gerenciamento%20da%20minha%20obra." target="_blank" class="btn btn-ink">Quero conversar sobre minha obra</a>
+        </div>
+      </div>
+      <div class="svc-img" data-aos="fade-right">
+        <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=900&q=80" alt="Equipe de capacete acompanhando canteiro de obras" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · Parcelamento de Solo -->
+<section class="svc-section" id="svc-parcelamento">
+  <div class="w">
+    <div class="svc-block">
+      <div class="svc-content" data-aos="fade-right">
+        <div class="svc-kicker">07 · Terrenos</div>
+        <h2 class="svc-title">Parcelamento de Solo</h2>
+        <p class="svc-what"><strong>O que é?</strong> Divisão de áreas de forma legal: desmembramentos,
+          remembramentos e loteamentos, com toda a documentação para aprovação na prefeitura e
+          registro no Cartório de Registro de Imóveis.</p>
+        <div class="svc-cols">
+          <div>
+            <div class="svc-sub">Quando você precisa</div>
+            <ul class="svc-check">
+              <li>Dividir um terreno entre herdeiros</li>
+              <li>Vender parte de uma área</li>
+              <li>Lotear uma gleba</li>
+              <li>Unificar terrenos vizinhos</li>
+              <li>Regularizar divisões antigas</li>
+            </ul>
+          </div>
+          <div>
+            <div class="svc-sub">O que entregamos</div>
+            <ul class="svc-deliv">
+              <li>Levantamento topográfico</li>
+              <li>Projeto de parcelamento</li>
+              <li>Memorial descritivo</li>
+              <li>Aprovação municipal</li>
+              <li>Encaminhamento ao registro</li>
+            </ul>
+          </div>
+        </div>
+        <div class="svc-cta">
+          <a href="https://wa.me/5547991134446?text=Olá!%20Quero%20conversar%20sobre%20o%20parcelamento%20de%20um%20terreno." target="_blank" class="btn btn-ink">Quero conversar sobre meu terreno</a>
+        </div>
+      </div>
+      <div class="svc-img" data-aos="fade-left">
+        <img src="https://images.unsplash.com/photo-1774697443203-0f54409d1613?w=900&q=80" alt="Vista aérea de área residencial com lotes demarcados" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · Design de Interiores -->
+<section class="svc-section" id="svc-interiores" style="background:var(--bg-white);">
+  <div class="w">
+    <div class="svc-block rev">
+      <div class="svc-content" data-aos="fade-left">
+        <div class="svc-kicker">08 · Ambientes</div>
+        <h2 class="svc-title">Design de Interiores</h2>
+        <p class="svc-what"><strong>O que é?</strong> Projeto que deixa seus ambientes mais bonitos,
+          funcionais e bem aproveitados: modelagem 3D, escolha de materiais, detalhamento de
+          marcenaria e projeto de iluminação.</p>
+        <div class="svc-cols">
+          <div>
+            <div class="svc-sub">Quando você precisa</div>
+            <ul class="svc-check">
+              <li>Modernizar a casa ou o apartamento</li>
+              <li>Integrar ou reorganizar ambientes</li>
+              <li>Planejar a marcenaria sob medida</li>
+              <li>Valorizar um ponto comercial</li>
+            </ul>
+          </div>
+          <div>
+            <div class="svc-sub">O que entregamos</div>
+            <ul class="svc-deliv">
+              <li>Layout dos ambientes</li>
+              <li>Imagens 3D realistas</li>
+              <li>Especificação de materiais</li>
+              <li>Detalhamento de marcenaria</li>
+              <li>Projeto luminotécnico</li>
+            </ul>
+          </div>
+        </div>
+        <div class="svc-cta">
+          <a href="https://wa.me/5547991134446?text=Olá!%20Quero%20conversar%20sobre%20um%20Projeto%20de%20Interiores." target="_blank" class="btn btn-ink">Quero conversar sobre meus ambientes</a>
+        </div>
+      </div>
+      <div class="svc-img" data-aos="fade-right">
+        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=900&q=80" alt="Sala de estar com design de interiores moderno" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     5. QUAL A DIFERENÇA ENTRE ESSES SERVIÇOS?
+     ========================================= -->
+<section class="section-home" id="diferenca">
+  <div class="w">
+    <div class="s-header">
+      <div class="s-eyebrow" data-aos="fade-up">Guia rápido</div>
+      <h2 class="s-title" data-aos="fade-up" data-aos-delay="60">Qual a diferença<br>entre esses serviços?</h2>
+      <p class="s-subtitle" data-aos="fade-up" data-aos-delay="120">
+        Comece pelo que você quer fazer — a coluna da direita mostra o serviço indicado.
+      </p>
+    </div>
+
+    <div class="cmp-wrap" data-aos="fade-up" data-aos-delay="160">
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th>Quero…</th>
+            <th>Serviço indicado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cmp-want">Construir uma casa</td>
+            <td><a href="#svc-arquitetonico" class="cmp-pill">Projeto Arquitetônico</a></td>
+          </tr>
+          <tr>
+            <td class="cmp-want">Reformar</td>
+            <td><a href="#svc-arquitetonico" class="cmp-pill">Projeto Arquitetônico</a><a href="#svc-interiores" class="cmp-pill">Interiores</a></td>
+          </tr>
+          <tr>
+            <td class="cmp-want">Abrir empresa</td>
+            <td><a href="#svc-preventivo" class="cmp-pill">Preventivo</a><a href="#svc-eletrico" class="cmp-pill">Elétrico</a></td>
+          </tr>
+          <tr>
+            <td class="cmp-want">Regularizar imóvel</td>
+            <td><a href="#svc-regularizacao" class="cmp-pill">Regularização</a></td>
+          </tr>
+          <tr>
+            <td class="cmp-want">Dividir terreno</td>
+            <td><a href="#svc-parcelamento" class="cmp-pill">Parcelamento</a></td>
+          </tr>
+          <tr>
+            <td class="cmp-want">Modernizar ambientes</td>
+            <td><a href="#svc-interiores" class="cmp-pill">Interiores</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     6. SERVIÇOS CONTRATADOS JUNTOS
+     ========================================= -->
+<section class="section-home" style="background:var(--bg-alt);">
+  <div class="w">
+    <div class="s-header">
+      <div class="s-eyebrow" data-aos="fade-up">Combinações frequentes</div>
+      <h2 class="s-title" data-aos="fade-up" data-aos-delay="60">Serviços que costumam<br>ser contratados juntos</h2>
+      <p class="s-subtitle" data-aos="fade-up" data-aos-delay="120">
+        Na prática, a maioria dos casos combina mais de um serviço. Estes são os pacotes mais comuns:
+      </p>
+    </div>
+
+    <div class="combo-grid" data-aos="fade-up" data-aos-delay="160">
+      <div class="combo-card">
+        <div class="combo-t">Construção residencial</div>
+        <ul>
+          <li>Projeto Arquitetônico</li>
+          <li>Projeto Elétrico</li>
+          <li>Projeto Hidrossanitário</li>
+          <li>Gerenciamento de Obra</li>
+        </ul>
+      </div>
+      <div class="combo-card">
+        <div class="combo-t">Reforma</div>
+        <ul>
+          <li>Projeto Arquitetônico</li>
+          <li>Design de Interiores</li>
+          <li>Projeto Elétrico</li>
+          <li>Projeto Hidrossanitário</li>
+        </ul>
+      </div>
+      <div class="combo-card">
+        <div class="combo-t">Comércio</div>
+        <ul>
+          <li>Preventivo Contra Incêndio</li>
+          <li>Projeto Elétrico</li>
+          <li>Projeto Arquitetônico</li>
+        </ul>
+      </div>
+      <div class="combo-card">
+        <div class="combo-t">Regularização</div>
+        <ul>
+          <li>Levantamento As-built</li>
+          <li>Projeto de Regularização</li>
+          <li>Documentação e Habite-se</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     7. COMO FUNCIONA (processo em 6 etapas)
+     ========================================= -->
+<section class="section-home" id="processo">
+  <div class="w">
+    <div class="s-header">
+      <div class="s-eyebrow" data-aos="fade-up">Processo</div>
+      <h2 class="s-title" data-aos="fade-up" data-aos-delay="60">Como funciona</h2>
+      <p class="s-subtitle" data-aos="fade-up" data-aos-delay="120">
+        Do primeiro contato à conclusão, você sabe exatamente em que etapa o seu projeto está.
+      </p>
+    </div>
+
+    <div class="timeline" data-aos="fade-up" data-aos-delay="160">
+      <div class="timeline-item">
+        <div class="timeline-marker">1</div>
+        <div class="timeline-title">Planejamento</div>
+        <p class="tx-cap">Entendemos seu objetivo e definimos o escopo do trabalho.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">2</div>
+        <div class="timeline-title">Levantamento</div>
+        <p class="tx-cap">Medições, documentos e análise do imóvel ou terreno.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">3</div>
+        <div class="timeline-title">Desenvolvimento</div>
+        <p class="tx-cap">Elaboração dos projetos com revisões junto com você.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">4</div>
+        <div class="timeline-title">Entrega</div>
+        <p class="tx-cap">Projetos finalizados, detalhados e prontos para uso.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">5</div>
+        <div class="timeline-title">Aprovação</div>
+        <p class="tx-cap">Encaminhamento na prefeitura e nos órgãos necessários.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-marker">6</div>
+        <div class="timeline-title">Acompanhamento</div>
+        <p class="tx-cap">Suporte durante a obra ou o processo, quando necessário.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     8. FAQ
+     ========================================= -->
+<section class="section-home" id="faq" style="background:var(--bg-white);">
+  <div class="w">
+    <div style="text-align:center;margin-bottom:56px;">
+      <div class="s-eyebrow" data-aos="fade-up">Respostas rápidas</div>
+      <h2 class="s-title" style="margin:12px auto 0;" data-aos="fade-up" data-aos-delay="60">Dúvidas comuns</h2>
+    </div>
+
+    <div class="faq-list" data-aos="fade-up" data-aos-delay="120">
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Preciso contratar todos os projetos?</div>
+        <div class="faq-a">Não. Cada caso exige um conjunto diferente de serviços. Na primeira conversa avaliamos sua situação e indicamos apenas o que realmente faz sentido.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Quanto tempo demora?</div>
+        <div class="faq-a">Depende do serviço e da complexidade do imóvel. Projetos simples levam poucas semanas; processos com aprovação na prefeitura variam conforme o órgão. Na primeira conversa passamos um prazo estimado para o seu caso.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Posso contratar apenas um?</div>
+        <div class="faq-a">Sim. Os serviços são independentes — você pode contratar só o projeto elétrico, só a regularização ou só os interiores, por exemplo.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Vocês visitam o local?</div>
+        <div class="faq-a">Sim. O levantamento no local faz parte de vários serviços, como regularização, reforma e gerenciamento de obras.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Atendem minha cidade?</div>
+        <div class="faq-a">Atendemos Brusque – SC e região. Vários serviços também podem ser desenvolvidos a distância — entre em contato e conte onde fica o seu imóvel.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================
+     9. CTA FINAL
+     ========================================= -->
+<section class="section-home final-cta" id="cta-final">
+  <div class="w">
+    <div class="final-cta-eyebrow" data-aos="fade-up">Próximo passo</div>
+    <h2 class="final-cta-h2" data-aos="fade-up" data-aos-delay="60">
+      Ainda não sabe qual<br>serviço precisa?
+    </h2>
+    <p class="final-cta-text" data-aos="fade-up" data-aos-delay="120">
+      Tudo bem. Explique sua situação e nós identificamos o caminho mais adequado para o seu imóvel —
+      sem compromisso e sem serviços desnecessários.
+    </p>
+    <div class="final-cta-buttons" data-aos="fade-up" data-aos-delay="180">
+      <a href="https://wa.me/5547991134446?text=Olá!%20Não%20sei%20qual%20serviço%20preciso%20e%20gostaria%20de%20falar%20com%20um%20especialista." target="_blank" class="btn btn-mint btn-lg">Falar com um especialista</a>
+      <a href="nao-sei-por-onde-comecar.html" class="btn btn-ghost btn-lg" style="border-color:rgba(244,244,240,0.3);color:#F4F4F0!important;">Descobrir meu caminho</a>
     </div>
   </div>
 </section>
@@ -128,47 +1171,103 @@
 <footer class="ds-ft">
   <div class="w">
     <div class="ds-ft-grid">
+
+      <!-- Brand col -->
       <div>
-        <div class="ds-ft-brand" style="margin-bottom: 20px;">
-          <img src="LOGOTIPO/SEM FUNDO/PRINCIPAL/2.png" alt="Virtual Engenharia" style="max-height: 32px; width: auto; object-fit: contain;">
+        <div style="margin-bottom: 24px;">
+          <img src="assets/logo/sem-fundo-principal-2.png" alt="Virtual Engenharia" style="max-height: 40px; width: auto; object-fit: contain;">
         </div>
-        <p class="ds-ft-desc">Projetos de engenharia e interiores com excelência técnica e identidade visual sólida.</p>
+        <p class="ds-ft-desc">Engenharia e interiores em Brusque – SC. Construção, reforma, regularização e design de ambientes com orientação técnica do início ao fim.</p>
         <div class="ft-social">
-          <a href="#" class="ft-soc-a">in</a>
-          <a href="#" class="ft-soc-a">IG</a>
-          <a href="#" class="ft-soc-a">TW</a>
+          <a href="https://www.instagram.com/virtual.projetos?igsh=MThyOGh4NTh3czZtNQ==" target="_blank" rel="noopener" class="ft-soc-a" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </a>
+          <a href="https://linkedin.com/company/virtualengenharia" target="_blank" rel="noopener" class="ft-soc-a" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <a href="https://wa.me/5547991134446" target="_blank" rel="noopener" class="ft-soc-a" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            </svg>
+          </a>
+          <a href="https://facebook.com/virtualengenharia" target="_blank" rel="noopener" class="ft-soc-a" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </a>
         </div>
       </div>
+
+      <!-- Serviços col -->
       <div>
         <div class="ft-h">Serviços</div>
         <div class="ft-links">
-          <a href="construcao-reforma.html">Construção &amp; Reforma</a>
-          <a href="regularizacao.html">Regularização de Imóveis</a>
-          <a href="servicos.html">Projetos de Interiores</a>
-          <a href="servicos.html">Projetos Complementares</a>
+          <a href="servicos.html#svc-arquitetonico">Projeto Arquitetônico</a>
+          <a href="servicos.html#svc-eletrico">Projeto Elétrico</a>
+          <a href="servicos.html#svc-hidrossanitario">Projeto Hidrossanitário</a>
+          <a href="servicos.html#svc-preventivo">Preventivo Contra Incêndio</a>
+          <a href="servicos.html#svc-regularizacao">Regularização de Imóveis</a>
+          <a href="servicos.html#svc-gerenciamento">Gerenciamento de Obras</a>
+          <a href="servicos.html#svc-parcelamento">Parcelamento de Solo</a>
+          <a href="servicos.html#svc-interiores">Interiores</a>
         </div>
       </div>
+
+      <!-- Navegação col -->
       <div>
-        <div class="ft-h">Mapa do Site</div>
+        <div class="ft-h">Navegação</div>
         <div class="ft-links">
           <a href="index.html">Início</a>
           <a href="servicos.html">Serviços</a>
-          <a href="nao-sei.html">Não sei o que preciso</a>
+          <a href="nao-sei-por-onde-comecar.html">Não Sei Por Onde Começar</a>
           <a href="projetos.html">Projetos Realizados</a>
-          <a href="sobre.html">Sobre Nós</a>
+          <a href="sobre.html">Sobre a Virtual</a>
+          <a href="contato.html">Contato</a>
         </div>
       </div>
+
+      <!-- Contato col -->
       <div>
-        <div class="ft-h">Contato</div>
+        <div class="ft-h">Fale Conosco</div>
         <div class="ft-links">
-          <a href="mailto:contato@virtual.com.br">contato@virtual.com.br</a>
-          <a href="tel:+551199999999">(11) 99999-9999</a>
+          <a href="https://wa.me/5547991134446" target="_blank" rel="noopener">
+            <span style="display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(244,244,240,0.55)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp
+            </span>
+          </a>
+          <a href="tel:+5547991134446">
+            <span style="display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(244,244,240,0.65)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              (47) 99113-4446
+            </span>
+          </a>
+          <a href="mailto:contatolucasgamba@gmail.com">
+            <span style="display:flex;align-items:center;gap:8px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(244,244,240,0.55)" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              contatolucasgamba@gmail.com
+            </span>
+          </a>
+          <a href="contato.html">Solicitar Orçamento</a>
+        </div>
+
+        <div style="margin-top: 32px; padding: 20px; background: rgba(32,133,168,0.08); border: 1px solid rgba(32,133,168,0.2); border-radius: 12px;">
+          <div style="font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--mint); margin-bottom: 8px;">Atendimento</div>
+          <div style="font-size: 13px; color: rgba(244,244,240,0.6); line-height: 1.6;">
+            Seg–Sex, 9h às 18h<br>
+            Resposta em até 24h
+          </div>
         </div>
       </div>
+
     </div>
     <div class="ds-ft-bottom">
       <span class="ds-ft-copy">© 2025 Virtual Engenharia — Todos os Direitos Reservados</span>
-      <span class="ds-ft-copy">Cream Mode · #ECEDE6</span>
+      <a href="https://intensedigital.com.br" target="_blank" rel="noopener" class="ds-ft-copy">Desenvolvido por Intense Digital</a>
     </div>
   </div>
   <div class="ds-ft-wordmark">Virtual</div>
@@ -232,7 +1331,14 @@
     }, { threshold: 0.25 });
     document.querySelectorAll('.tr-wrap').forEach(el => trObs.observe(el));
   });
-  
+
+  // FAQ ACCORDION (mesmo comportamento da home)
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    const isActive = item.classList.contains('active');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+    if (!isActive) item.classList.add('active');
+  }
 </script>
 </body>
 </html>

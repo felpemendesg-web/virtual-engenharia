@@ -100,7 +100,6 @@ strong,b{font-weight:700;color:var(--ink)}
 .h-logo{position:absolute;left:50%;transform:translateX(-50%);
   display:flex;align-items:center;gap:12px}
 .h-logo img{max-height:44px!important;}
-.h-logo-title{font-family:var(--fd);font-size:18px;font-weight:800;color:var(--ink)}
 /* right CTA */
 .h-cta{border:1.5px solid var(--ink);padding:10px 24px;font-size:12px;
   font-weight:700;letter-spacing:.1em;text-transform:uppercase;
@@ -148,7 +147,6 @@ strong,b{font-weight:700;color:var(--ink)}
 .section{padding:120px 0;position:relative}
 .section-white{background:var(--bg-white)}
 .section-alt{background:var(--bg-alt)}
-.section-dark{background:var(--bg-dark);color:#F4F4F0}
 .s-num{display:flex;align-items:center;gap:16px;font-size:11px;font-weight:700;
   letter-spacing:.2em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:16px}
 .s-num::after{content:'';flex:1;height:1px;background:var(--border)}
@@ -357,12 +355,6 @@ hr.div{border:none;height:1px;background:var(--border);margin:64px 0}
 .f-inp.ok{border-color:var(--mint);box-shadow:0 0 0 3px rgba(181,216,192,.18)}
 .f-ta{resize:vertical;min-height:100px}
 .f-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-/* luxury search bar glass style */
-.f-inp-glass{background:rgba(255,255,255,.15);border:none;
-  border-bottom:1px solid rgba(255,255,255,.4);padding:12px 0;color:#fff;
-  outline:none;width:100%;font-size:15px}
-.f-inp-glass::placeholder{color:rgba(255,255,255,.6)}
-.f-inp-glass:focus{border-bottom-color:#fff}
 
 /* ---- BADGES ---- */
 .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;
@@ -392,7 +384,6 @@ hr.div{border:none;height:1px;background:var(--border);margin:64px 0}
 .l-ph.tall{min-height:140px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 
 /* ---- MOTION ---- */
 .mot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:20px}
@@ -421,11 +412,8 @@ hr.div{border:none;height:1px;background:var(--border);margin:64px 0}
 .logo-lbl{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
   color:var(--ink-muted);text-align:center;margin-top:10px}
 .logo-item{display:flex;flex-direction:column}
-.lb-bg{background:var(--bg)}
 .lb-white{background:#fff}
 .lb-dk{background:#2D3142}
-.lb-tl{background:#2085A8}
-.lb-mt{background:#B5D8C0}
 .lb-cream{background:#ECEDE6}
 
 /* ---- STATES ---- */
@@ -440,15 +428,7 @@ hr.div{border:none;height:1px;background:var(--border);margin:64px 0}
 .rad-item{display:flex;flex-direction:column;align-items:center;gap:8px}
 .rad-box{width:52px;height:52px;background:var(--teal)}
 
-/* ---- BORDER (luxury style) — decorative ---- */
-.bd-line{display:flex;align-items:center;gap:12px;
-  font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-muted);padding:20px 0}
-.bd-line::before,.bd-line::after{content:'';flex:1;height:1px;background:var(--border)}
-
 /* ---- FOOTER — dark (luxury + digital-architect) ---- */
-.ds-footer{background:var(--bg-dark);color:#F4F4F0;padding:96px 0 56px;
-  position:relative;overflow:hidden}
 .ds-ft{background:var(--bg-dark);color:#F4F4F0;padding:96px 0 56px;
   position:relative;overflow:hidden}
 .ds-ft-wordmark{position:absolute;bottom:-48px;left:0;right:0;text-align:center;
@@ -483,8 +463,7 @@ hr.div{border:none;height:1px;background:var(--border);margin:64px 0}
 
 /* ---- UTILS ---- */
 .mb4{margin-bottom:16px}.mb6{margin-bottom:24px}.mb8{margin-bottom:32px}
-.mb12{margin-bottom:48px}.mt8{margin-top:32px}
-.flex{display:flex}.items-c{align-items:center}.gap4{gap:16px}.gap3{gap:12px}
+.mb12{margin-bottom:48px}
 .g-texth{background:var(--g-brand-h);-webkit-background-clip:text;
   -webkit-text-fill-color:transparent;background-clip:text}
 
@@ -503,7 +482,7 @@ hr.div{border:none;height:1px;background:var(--border);margin:64px 0}
   .b-guides{padding:0 1.5rem}
   .section{padding:80px 0}
   .b-h1{font-size:4rem}
-  .c-row,.g2,.g3,.g4{grid-template-columns:1fr}
+  .c-row,.g2,.g3{grid-template-columns:1fr}
   .proj-inner{grid-template-columns:1fr}
   .proj-img{min-height:200px}
   .type-row{grid-template-columns:120px 1fr}
@@ -511,15 +490,6 @@ hr.div{border:none;height:1px;background:var(--border);margin:64px 0}
   .h-nav-l,.h-nav-r,.h-cta{display:none}
   .ds-ft-grid{grid-template-columns:1fr}
   .ds-ft-wordmark{display:none}
-}
-
-/* ---- BLUEPRINT FLOORPLAN GRID BACKGROUND ---- */
-.blueprint-bg {
-  background-color: var(--bg);
-  background-image: 
-    linear-gradient(rgba(32,133,168,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(32,133,168,0.035) 1px, transparent 1px);
-  background-size: 32px 32px;
 }
 
 /* ---- WHATSAPP FLOATING BUTTON ---- */
