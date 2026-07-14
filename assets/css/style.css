@@ -524,7 +524,7 @@ hr.div{border:none;height:1px;background:var(--border);margin:64px 0}
   .type-row{grid-template-columns:120px 1fr}
   .t-spec{display:none}
   .h-nav-l,.h-nav-r,.h-cta{display:none}
-  .h-burger{display:flex}
+  .h-burger{display:flex;margin-left:auto}
   .ds-ft-grid{grid-template-columns:1fr}
   .ds-ft-wordmark{display:none}
 }
