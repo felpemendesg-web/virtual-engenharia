@@ -869,9 +869,28 @@
         <a href="contato.html">Contato</a>
         <a href="contato.html" class="h-cta" id="hl-cta">Orçamento</a>
       </nav>
+      <button type="button" class="h-burger" id="hburger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-overlay">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </header>
+
+<!-- MOBILE OVERLAY MENU -->
+<div class="mobile-overlay" id="mobile-overlay">
+  <button type="button" class="mobile-overlay-close" id="hburger-close" aria-label="Fechar menu">
+    <span></span><span></span>
+  </button>
+  <nav class="mobile-overlay-nav">
+    <a href="index.html" class="active">Início</a>
+    <a href="servicos.html">Serviços</a>
+    <a href="nao-sei-por-onde-comecar.html">Não Sei Por Onde Começar</a>
+    <a href="projetos.html">Projetos</a>
+    <a href="sobre.html">Sobre</a>
+    <a href="contato.html">Contato</a>
+    <a href="contato.html" class="h-cta">Orçamento</a>
+  </nav>
+</div>
 
 <!-- =========================================
      1. HERO / PRIMEIRA DOBRA
@@ -1680,5 +1699,6 @@
     mq.addEventListener('mouseleave', () => mq.style.animationPlayState = 'running');
   }
 </script>
+<script src="assets/js/main.js"></script>
 </body>
 </html>
